@@ -1,10 +1,10 @@
 import HeroSection from "../components/applyComponent/HeroSection";
-// import Header from "../components/homeComponent/Header";
+import Header from "../components/homeComponent/Header";
 const ApplyPage = () => {
   return (
     <div style={{
       display:"flex" ,flexDirection:"column"}}>
-      {/* <Header /> */}
+      <Header />
       <HeroSection />
     </div>
   )

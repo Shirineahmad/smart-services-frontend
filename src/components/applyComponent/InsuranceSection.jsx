@@ -14,15 +14,23 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
+import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 
-
-
-
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 // const userId = localStorage.getItem("userId");
 //  const token = localStorage.getItem('token');
@@ -39,19 +47,19 @@ const MenuProps = {
 
 const names = ["Adult", "Child", "Infant"];
 
-const FlightSection = () => {
+const InsuranceSection = () => {
   const [way, setWay] = React.useState("");
   const [leavingFrom, setLeavingFrom] = React.useState("");
   const [arriving, setArriving] = React.useState("");
-    const [leavingDate, setLeavingDate] = React.useState(null);
-    const [arrivingDate, setArrivingDate] = React.useState(null);
+  const [leavingDate, setLeavingDate] = React.useState(null);
+  const [arrivingDate, setArrivingDate] = React.useState(null);
   const [classFlight, setClassFlight] = React.useState("");
-  const[images,setImages]=React.useState([])
- const [travelers, setTravelers] = React.useState({
-   Adult: 0,
-   Child: 0,
-   Infant: 0,
- });
+  const [images, setImages] = React.useState([]);
+  const [travelers, setTravelers] = React.useState({
+    Adult: 0,
+    Child: 0,
+    Infant: 0,
+  });
   const [additionalComment, setAdditionalComment] = React.useState("");
   const [error, setError] = React.useState(null);
 
@@ -65,7 +73,7 @@ const FlightSection = () => {
   const handleClass = (event) => {
     setClassFlight(event.target.value);
   };
-   const handleLeavingDateChange = (date) => {
+  const handleLeavingDateChange = (date) => {
     // Handle changes in leavingDate
     setLeavingDate(date);
   };
@@ -74,29 +82,17 @@ const FlightSection = () => {
     // Handle changes in arrivingDate
     setArrivingDate(date);
   };
-const handleChangeChip = (event) => {
-  const selectedTravelers = event.target.value;
+  const handleChangeChip = (event) => {
+    const selectedTravelers = event.target.value;
 
-  // Update the state with the selected travelers
-  const updatedTravelers = {};
-  selectedTravelers.forEach((item) => {
-    updatedTravelers[item.name] = item.count;
-  });
+    // Update the state with the selected travelers
+    const updatedTravelers = {};
+    selectedTravelers.forEach((item) => {
+      updatedTravelers[item.name] = item.count;
+    });
 
-  setTravelers(updatedTravelers);
-};
-const handleImageChange = (e) => {
-    const newImages = e.target.files[0];
-
-    if (newImages && images.length < 4) {
-      setImages((prevImages) => [...prevImages, newImages]);
-    }
-   
+    setTravelers(updatedTravelers);
   };
-  
-
-
-  
 
   const validateInput = () => {
     if (!way) {
@@ -123,43 +119,77 @@ const handleImageChange = (e) => {
 
     return true;
   };
-   React.useEffect(() => {
-     console.log("Updated travelers:", travelers);
-   }, [travelers]);  
-  
+  React.useEffect(() => {
+    console.log("Updated travelers:", travelers);
+  }, [travelers]);
+  // const handleImageChange = async (event) => {
+  //   const selectedImages = Array.from(event.target.files);
+
+  //   // Create an array of promises for uploading each file
+  //   const uploadPromises = selectedImages.map(async (file) => {
+  //     // Your logic for uploading the file and getting the download URL
+  //     const downloadURL = await uploadFileAndGetURL(file);
+  //     return downloadURL;
+  //   });
+
+  //   // Wait for all uploads to complete
+  //   const uploadedFiles = await Promise.all(uploadPromises);
+
+  //   // Update the passport array with download URLs
+  //   setImages(uploadedFiles);
+  // };
+
+  // const uploadFileAndGetURL = async (file) => {
+  //   // Your logic for uploading the file and getting the download URL
+  //   const response = await axios.post("your_upload_url", file);
+  //   return response.data.downloadURL; // Adjust this based on your server's response
+  // };
+
   const handleConfirm = async (e) => {
     e.preventDefault();
     if (!validateInput()) {
       return;
     }
-console.log("images",images)
+
     try {
-    const formData = new FormData();
-    formData.append("userId", "658f4da73a6841f3bcd1ba6f");
-    formData.append("type", way);
-    formData.append("leavingFrom", leavingFrom);
-    formData.append("goingTo", arriving);
-    formData.append("classFlight", classFlight);
-    formData.append("additionalComment", additionalComment);
-    formData.append("leavingDate", leavingDate);
-    formData.append("arrivingDate", arrivingDate);
+      const file = document.getElementById("fileInput").files[0]; // Assuming you have an input field with id="fileInput"
+      const formData = new FormData();
+      formData.append("passport", file);
 
-    // Append each image in the images array to the formData under the 'passport' key
-    images.forEach((image) => {
-      formData.append(`passport`, image);
-    });
-
-    // Append the travelers object as a JSON string
-    formData.append("person", JSON.stringify(travelers));
-
-      console.log("newFlight", formData);
-      const flightResponse = await axios.post(
+      const imageResponse = await axios.post(
         "http://localhost:8000/submissionFlight/create",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGY0ZGE3M2E2ODQxZjNiY2QxYmE2ZiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3MDUzNDc0MjMsImV4cCI6MTcwNTM1MTAyM30.louzbJVsZDGIZ5habggGa9lHIfZACAFXFuVZsP4kITQ"}`,
+            Authorization: `Bearer ${"your_access_token"}`, // Replace with your actual access token
+          },
+        }
+      );
+
+      const imageUrl = imageResponse.data.data.url;
+      setImages([imageUrl]);
+
+      // Continue with the rest of your logic (flight submission or any other actions)
+      const newFlight = {
+        userId: "658f4da73a6841f3bcd1ba6f",
+        type: way,
+        leavingFrom: leavingFrom,
+        goingTo: arriving,
+        leavingDate: leavingDate.toISOString(),
+        arrivingDate: arrivingDate.toISOString(),
+        classFlight: classFlight,
+        travelers: travelers,
+        additionalComment: additionalComment,
+        passport: images,
+      };
+
+      const flightResponse = await axios.post(
+        "http://localhost:8000/submissionFlight/create",
+        { newFlight },
+        {
+          headers: {
+            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGY0ZGE3M2E2ODQxZjNiY2QxYmE2ZiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3MDUzMTQ0MjEsImV4cCI6MTcwNTMxODAyMX0.duFiLzLW0A_DbnlRkTwFKXY3wQN9nN0HT3GfUspH91E"}`,
           },
         }
       );
@@ -171,28 +201,15 @@ console.log("images",images)
       setLeavingFrom("");
       setArriving("");
       setClassFlight("");
-      setLeavingDate("");
-      setArrivingDate("");
       setTravelers({
         Adult: 0,
         Child: 0,
         Infant: 0,
       });
       setAdditionalComment("");
-      setImages(null);
+      setImages([]);
     } catch (error) {
-     console.error("Error creating order:", error.message);
-     if (error.response) {
-       // The request was made and the server responded with a status code
-       console.error("Detailed error response:", error.response.data);
-       console.error("Status code:", error.response.status);
-     } else if (error.request) {
-       // The request was made but no response was received
-       console.error("No response received");
-     } else {
-       // Something happened in setting up the request that triggered an Error
-       console.error("Error:", error.message);
-     }
+      console.error("Error creating order:", error.message);
     }
   };
 
@@ -211,7 +228,7 @@ console.log("images",images)
         }}
         onSubmit={handleConfirm}
       >
-        <RadioGroup
+        {/* <RadioGroup
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
@@ -240,7 +257,7 @@ console.log("images",images)
             control={<Radio />}
             label="Multi City"
           />
-        </RadioGroup>
+        </RadioGroup> */}
         {/* select one */}
         <Box
           sx={{
@@ -275,7 +292,7 @@ console.log("images",images)
             <ArrowBackIcon sx={{ color: "red" }} />
           </Box>
           {/* select two */}
-          <Select
+          {/* <Select
             displayEmpty
             value={arriving}
             onChange={handleArriving}
@@ -298,7 +315,7 @@ console.log("images",images)
                 {country}
               </MenuItem>
             ))}
-          </Select>
+          </Select> */}
           <Box
             style={{ display: "flex", flexDirection: "row", columnGap: "20px" }}
           >
@@ -322,11 +339,7 @@ console.log("images",images)
                   StartDate="startDate"
                   onChange={handleLeavingDateChange}
                 />
-                <DatePicker
-                  label="EndDate"
-                  sx={{ marginTop: "0px" }}
-                  onChange={handleArrivingDateChange}
-                />
+               
               </DemoContainer>
             </LocalizationProvider>
           </Box>
@@ -444,13 +457,21 @@ console.log("images",images)
             value={additionalComment}
             onChange={(e) => setAdditionalComment(e.target.value)}
           />
-          <input
-            
-            type="file"
-            accept="image/*"
-            onChange={ handleImageChange}
-            className="flex-1 px-4 py-1 focus:outline-none text-black"
-          />
+          <Button
+            component="label"
+            variant="contained"
+            startIcon={<CloudUploadIcon />}
+            sx={{
+              fontFamily: "popins",
+              backgroundColor: "#DF2E38",
+              "&:hover": {
+                backgroundColor: "#5D9C59", // Change to the desired hover color
+              },
+            }}
+          >
+            Upload file
+            <VisuallyHiddenInput type="file" accept="image/*" id="fileInput" />
+          </Button>
           <Button
             type="submit"
             sx={{
@@ -477,4 +498,4 @@ console.log("images",images)
   );
 };
 
-export default FlightSection;
+export default InsuranceSection;

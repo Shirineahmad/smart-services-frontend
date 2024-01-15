@@ -11,46 +11,40 @@ import { Flight } from "@mui/icons-material";
 import MovingIcon from "@mui/icons-material/Moving";
 import DescriptionIcon from "@mui/icons-material/Description";
 import FlightSection from "./FlightSection";
+import imageBack from "../../images/pexels-porapak-apichodilok-346885.jpg"
+import VisaSection from "./VisaSection";
+import InsuranceSection from "./InsuranceSection";
 
 const AntTabs = styled(Tabs)({
   borderBottom: "1px solid #e8e8e8",
   "& .MuiTabs-indicator": {
-    backgroundColor: "#1890ff",
+    backgroundColor: "#5D9C59",
   },
+  justifyContent: "center",
 });
 
 const AntTab = styled((props) => <Tab disableRipple {...props} />)(
   ({ theme }) => ({
     textTransform: "none",
     minWidth: 0,
+    justifyContent: "center",
     [theme.breakpoints.up("sm")]: {
       minWidth: 0,
     },
     fontWeight: theme.typography.fontWeightRegular,
     marginRight: theme.spacing(1),
-    color: "rgba(0, 0, 0, 0.85)",
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
+    color: "#DF2E38",
+    fontFamily: ["popins"].join(","),
     "&:hover": {
-      color: "#40a9ff",
+      color: "#5D9C59",
       opacity: 1,
     },
     "&.Mui-selected": {
-      color: "#1890ff",
+      color: "#5D9C59",
       fontWeight: theme.typography.fontWeightMedium,
     },
     "&.Mui-focusVisible": {
-      backgroundColor: "#d1eaff",
+      backgroundColor: "#5D9C59",
     },
   })
 );
@@ -66,28 +60,14 @@ const StyledTabs = styled((props) => (
     justifyContent: "center",
     backgroundColor: "transparent",
   },
-  // "& .MuiTabs-indicatorSpan": {
-  //   maxWidth: 40,
-  //   width: "100%",
-  //   backgroundColor: "#635ee7",
-  // },
+  "& .MuiTabs-flexContainer": {
+    
+    justifyContent: "center",
+  
+  },
 });
 
-const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
-  ({ theme }) => ({
-    textTransform: "none",
-    fontWeight: theme.typography.fontWeightRegular,
-    fontSize: theme.typography.pxToRem(15),
-    marginRight: theme.spacing(1),
-    color: "rgba(255, 255, 255, 0.7)",
-    "&.Mui-selected": {
-      color: "#fff",
-    },
-    "&.Mui-focusVisible": {
-      backgroundColor: "rgba(100, 95, 228, 0.32)",
-    },
-  })
-);
+
 
 export default function CustomizedTabs() {
   const dispatch = useDispatch();
@@ -135,30 +115,58 @@ export default function CustomizedTabs() {
    dispatch(setValue((prevValue, servicesListLength) => newValue));
  };
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ bgcolor: "#fff" }}>
-        <AntTabs value={value} onChange={handleChange} aria-label="ant example">
-          {servicesList.map((service) => (
-            <AntTab
-              key={service._id}
-              label={service.name}
-              icon={handleIcon(service.name)}
-            />
-          ))}
-        </AntTabs>
-        <Box sx={{ p: 3 }} />
-      </Box>
-      <Box sx={{ bgcolor: "#2e1534" }}>
-        <StyledTabs
-          value={value}
-          onChange={handleChange}
-          // aria-label="styled tabs example"
-        >
-          {value === 0 && <FlightSection />}
-          
-        </StyledTabs>
-        <Box sx={{ p: 3 }} />
+    <Box
+      sx={{
+        position: "absolute",
+        top: "80px",
+        left: 0,
+        width: "100%",
+        backgroundImage: `url(${imageBack})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Box
+        sx={{
+          width: "100%",
+          flexGrow: 0,
+          position: "relative",
+          height: 500,
+
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "Center",
+        }}
+      >
+        <Box sx={{ bgcolor: "#fff" }}>
+          <AntTabs
+            value={value}
+            onChange={handleChange}
+            aria-label="ant example"
+          >
+            {servicesList.map((service) => (
+              <AntTab
+                key={service._id}
+                label={service.name}
+                icon={handleIcon(service.name)}
+              />
+            ))}
+          </AntTabs>
+        </Box>
+        <Box sx={{ bgcolor: "#ddf7e3", width: "1200px" , display:"flex", justifyContent:"center"}}>
+          <StyledTabs
+            value={value}
+            onChange={handleChange}
+            sx={{ width: "100%",  justifyContent:"center" ,display:"flex", }}
+          >
+            {value === 0 && <VisaSection />}
+            {value === 1 && <InsuranceSection />}
+            {value === 2 && <FlightSection />}
+          </StyledTabs>
+        </Box>
       </Box>
     </Box>
+    // </Box>
   );
 }
