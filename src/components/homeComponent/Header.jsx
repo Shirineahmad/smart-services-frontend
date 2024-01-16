@@ -11,14 +11,23 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-
-
+import { Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const pages = ["Services", "About Us", "Contact Us", "Apply"];
-const settings = ["Profile", "Dashboard", "Logout"];
+const settings = ["Profile",  "Logout"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+const [userRole, setUserRole] = React.useState("");
+  const navigate = useNavigate();
+   React.useEffect(() => {
+     const userId = localStorage.getItem("userId");
+     if (userId) {
+          setIsLoggedIn(true);
+     }
+    }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -33,6 +42,24 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  React.useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    const role = localStorage.getItem("role");
+    if (userId) {
+      setIsLoggedIn(true);
+      setUserRole(role);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    // Perform logout actions, e.g., clear local storage, close the menu, and navigate to the SignIn page
+    localStorage.clear();
+    handleCloseUserMenu();
+    setIsLoggedIn(false)
+    // Assuming you have a 'navigate' function from a routing library (like react-router-dom)
+    // import { navigate } from 'react-router-dom';
+    navigate("/");
   };
 
   return (
@@ -166,8 +193,9 @@ function Header() {
               flexGrow: 0,
               display: "",
               flexDirection: "column",
-              alignItems: { xs: "center", md: "flex-start" }
-            }}flex
+              alignItems: { xs: "center", md: "flex-start" },
+            }}
+            flex
           >
             <Box
               sx={{
@@ -220,7 +248,7 @@ function Header() {
               href="#app-bar-with-responsive-menu"
               sx={{
                 m: 0,
-                display: {xs: 'flex', md: 'none', justifyItems: "center" },
+                display: { xs: "flex", md: "none", justifyItems: "center" },
                 fontFamily: "popins",
                 fontWeight: 400,
                 letterSpacing: ".0.7rem",
@@ -252,39 +280,62 @@ function Header() {
               </Button>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          {!isLoggedIn ? (
+            <Link to="/SignIn">
+              <IconButton sx={{ p: 0 }}>
                 <Avatar
                   sx={{ backgroundColor: "#DF2E38" }}
                   src="/broken-image.jpg"
                 />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+            </Link>
+          ) : (
+            <Box sx={{ flexGrow: 0 }}>
+              {userRole === "client" && ( // Check if the user role is "client"
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      sx={{ backgroundColor: "#DF2E38" }}
+                      alt=""
+                      src="/broken-image.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) =>
+                  // (setting === "Dashboard" && userRole === "admin") ||
+                  // setting !== "Dashboard" ? (
+                    <MenuItem
+                      key={setting}
+                      onClick={
+                        setting === "Logout"
+                          ? handleLogout
+                          : handleCloseUserMenu
+                      }
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  // ) : null
+                )}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

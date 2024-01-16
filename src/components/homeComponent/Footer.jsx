@@ -7,9 +7,27 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { Typography } from "@mui/material";
  import { Link } from "react-router-dom";
-
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 const Footer = () => {
+  
   return (
     <Box
       sx={{
@@ -239,6 +257,7 @@ const Footer = () => {
           shiroGroup@gmail.com
         </li>
       </Stack>
+      <Copyright sx={{ mt: 5 }} />
     </Box>
   );
 };
