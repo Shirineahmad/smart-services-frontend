@@ -24,8 +24,8 @@ import axios from "axios";
 
 
 
-// const userId = localStorage.getItem("userId");
-//  const token = localStorage.getItem('token');
+const userId = localStorage.getItem("userId");
+ const token = localStorage.getItem('token');
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -135,7 +135,7 @@ const handleImageChange = (e) => {
 console.log("images",images)
     try {
     const formData = new FormData();
-    formData.append("userId", "658f4da73a6841f3bcd1ba6f");
+    formData.append("userId", userId);
     formData.append("type", way);
     formData.append("leavingFrom", leavingFrom);
     formData.append("goingTo", arriving);
@@ -159,7 +159,7 @@ console.log("images",images)
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGY0ZGE3M2E2ODQxZjNiY2QxYmE2ZiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3MDUzNDc0MjMsImV4cCI6MTcwNTM1MTAyM30.louzbJVsZDGIZ5habggGa9lHIfZACAFXFuVZsP4kITQ"}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

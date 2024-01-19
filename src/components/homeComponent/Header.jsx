@@ -11,23 +11,43 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-const pages = ["Services", "About Us", "Contact Us", "Apply"];
-const settings = ["Profile",  "Logout"];
+import axios from "axios";
+
+const pages = ["Services", "About Us", "Contact Us"];
+const settings = ["Profile", "Logout"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-const [userRole, setUserRole] = React.useState("");
+  const [userRole, setUserRole] = React.useState("");
+  const [name, setName] = React.useState("");
   const navigate = useNavigate();
-   React.useEffect(() => {
-     const userId = localStorage.getItem("userId");
-     if (userId) {
-          setIsLoggedIn(true);
-     }
-    }, []);
+  React.useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      setIsLoggedIn(true);
+    }
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.01:8000/user/getById/${userId}`
+        );
+        console.log("firstName.data", response.data);
+        if (response.data.success) {
+          setName(response.data.data);
+          console.log("response.data.data", response.data.data);
+        } else {
+          console.error("Error fetching products:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error.message);
+      }
+    };
+    fetchServices();
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -37,6 +57,7 @@ const [userRole, setUserRole] = React.useState("");
   };
 
   const handleCloseNavMenu = () => {
+    console.log("Closing navigation menu");
     setAnchorElNav(null);
   };
 
@@ -56,7 +77,7 @@ const [userRole, setUserRole] = React.useState("");
     // Perform logout actions, e.g., clear local storage, close the menu, and navigate to the SignIn page
     localStorage.clear();
     handleCloseUserMenu();
-    setIsLoggedIn(false)
+    setIsLoggedIn(false);
     // Assuming you have a 'navigate' function from a routing library (like react-router-dom)
     // import { navigate } from 'react-router-dom';
     navigate("/");
@@ -76,50 +97,52 @@ const [userRole, setUserRole] = React.useState("");
             }}
           >
             {" "}
-            <Box
-              sx={{
-                mt: 1,
-                flexGrow: 1,
-                display: "flex",
-                flexDirection: "row", // Set flex direction to column
-                alignItems: { xs: "center", md: "flex-start" }, // Center on smaller screens
-              }}
-            >
-              <Typography
-                variant="h4"
-                noWrap
-                component="a"
-                href="#app-bar-with-responsive-menu"
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Box
                 sx={{
-                  mr: 0.5,
-                  display: { xs: "none", md: "flex" },
-                  fontFamily: "popins",
-                  fontWeight: 700,
-                  letterSpacing: ".0.7rem",
-                  color: "#DF2E38",
-                  textDecoration: "none",
+                  mt: 1,
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "row", // Set flex direction to column
+                  alignItems: { xs: "center", md: "flex-start" }, // Center on smaller screens
                 }}
               >
-                Shiro
-              </Typography>
-              <Typography
-                variant="h4"
-                noWrap
-                component="a"
-                href="#app-bar-with-responsive-menu"
-                sx={{
-                  mr: 1,
-                  display: { xs: "none", md: "flex" },
-                  fontFamily: "popins",
-                  fontWeight: 700,
-                  letterSpacing: ".0.7rem",
-                  color: "#5D9C59",
-                  textDecoration: "none",
-                }}
-              >
-                Group
-              </Typography>
-            </Box>
+                <Typography
+                  variant="h4"
+                  noWrap
+                  component="a"
+                  href="#app-bar-with-responsive-menu"
+                  sx={{
+                    mr: 0.5,
+                    display: { xs: "none", md: "flex" },
+                    fontFamily: "popins",
+                    fontWeight: 700,
+                    letterSpacing: ".0.7rem",
+                    color: "#DF2E38",
+                    textDecoration: "none",
+                  }}
+                >
+                  Shiro
+                </Typography>
+                <Typography
+                  variant="h4"
+                  noWrap
+                  component="a"
+                  href="#app-bar-with-responsive-menu"
+                  sx={{
+                    mr: 1,
+                    display: { xs: "none", md: "flex" },
+                    fontFamily: "popins",
+                    fontWeight: 700,
+                    letterSpacing: ".0.7rem",
+                    color: "#5D9C59",
+                    textDecoration: "none",
+                  }}
+                >
+                  Group
+                </Typography>
+              </Box>{" "}
+            </Link>
             <Typography
               variant="h6"
               noWrap
@@ -181,11 +204,21 @@ const [userRole, setUserRole] = React.useState("");
                 },
               }}
             >
+              {" "}
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+                <Button
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "#DF2E38", display: "block" }}
+                >
+                  {page}
+                </Button>
               ))}
+              <Link to="/Apply" style={{ textDecoration: "none" }}>
+                <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
+                  Apply
+                </Button>
+              </Link>
             </Menu>
           </Box>
           <Box
@@ -279,6 +312,11 @@ const [userRole, setUserRole] = React.useState("");
                 {page}
               </Button>
             ))}
+            <Link to="/Apply" style={{ textDecoration: "none" }}>
+              <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
+                Apply
+              </Button>
+            </Link>
           </Box>
           {!isLoggedIn ? (
             <Link to="/SignIn">
@@ -296,8 +334,8 @@ const [userRole, setUserRole] = React.useState("");
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
                       sx={{ backgroundColor: "#DF2E38" }}
-                      alt=""
-                      src="/broken-image.jpg"
+                      alt={name.firstName}
+                      src="#"
                     />
                   </IconButton>
                 </Tooltip>
@@ -318,9 +356,10 @@ const [userRole, setUserRole] = React.useState("");
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) =>
-                  // (setting === "Dashboard" && userRole === "admin") ||
-                  // setting !== "Dashboard" ? (
+                {settings.map(
+                  (setting) => (
+                    // (setting === "Dashboard" && userRole === "admin") ||
+                    // setting !== "Dashboard" ? (
                     <MenuItem
                       key={setting}
                       onClick={
@@ -331,6 +370,7 @@ const [userRole, setUserRole] = React.useState("");
                     >
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
+                  )
                   // ) : null
                 )}
               </Menu>
