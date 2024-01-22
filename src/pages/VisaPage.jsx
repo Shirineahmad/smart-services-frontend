@@ -1,9 +1,10 @@
 import React from 'react'
-import Header from "../components/homeComponent/Header"
+import Header from "../components/homeComponent/Header" 
 import HeroVisa from '../components/visaComponent/HeroVisa'
 import CountryInformation from '../components/visaComponent/CountryInformation'
 import { useLocation } from "react-router-dom";
 import VisaType from '../components/visaComponent/VisaType';
+import Footer from "../components/homeComponent/Footer";
 const VisaPage = () => {
     const location = useLocation();
     const visaData = location.state?.visaData;
@@ -16,7 +17,8 @@ const VisaPage = () => {
       <Header />
       <HeroVisa countryName={visaData[0].countryName} />
       <CountryInformation countryData={countryInformation} />
-      <VisaType/>
+      <VisaType visaData={visaData} />
+      <Footer/>
     </div>
   );
 }

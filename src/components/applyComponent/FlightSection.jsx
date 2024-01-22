@@ -40,12 +40,12 @@ const MenuProps = {
 const names = ["Adult", "Child", "Infant"];
 
 const FlightSection = () => {
-  const [way, setWay] = React.useState("");
+  const [way, setWay] = React.useState("Round");
   const [leavingFrom, setLeavingFrom] = React.useState("");
   const [arriving, setArriving] = React.useState("");
     const [leavingDate, setLeavingDate] = React.useState(null);
     const [arrivingDate, setArrivingDate] = React.useState(null);
-  const [classFlight, setClassFlight] = React.useState("");
+  const [classFlight, setClassFlight] = React.useState("Economy");
   const[images,setImages]=React.useState([])
  const [travelers, setTravelers] = React.useState({
    Adult: 0,
@@ -85,13 +85,12 @@ const handleChangeChip = (event) => {
 
   setTravelers(updatedTravelers);
 };
-const handleImageChange = (e) => {
+  const handleFileUpload = (e) => {
     const newImages = e.target.files[0];
 
     if (newImages && images.length < 4) {
       setImages((prevImages) => [...prevImages, newImages]);
     }
-   
   };
   
 
@@ -263,6 +262,8 @@ console.log("images",images)
 
               return selected;
             }}
+            MenuProps={MenuProps}
+            inputProps={{ "aria-label": "Without label" }}
           >
             {countries.map((country) => (
               <MenuItem key={country} value={country}>
@@ -346,7 +347,7 @@ console.log("images",images)
           >
             <MenuItem value="Economy">Economy</MenuItem>
             <MenuItem value="First">First </MenuItem>
-            <MenuItem value="Buissness">Buissness</MenuItem>
+            <MenuItem value="Buissness">Buissnes</MenuItem>
             <MenuItem value="Buissnes Economy">Buissnes Economy</MenuItem>
           </Select>
 
@@ -445,11 +446,10 @@ console.log("images",images)
             onChange={(e) => setAdditionalComment(e.target.value)}
           />
           <input
-            
             type="file"
-            accept="image/*"
-            onChange={ handleImageChange}
-            className="flex-1 px-4 py-1 focus:outline-none text-black"
+            accept="application/pdf"
+            onChange={handleFileUpload}
+            name="file"
           />
           <Button
             type="submit"

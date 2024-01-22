@@ -1,6 +1,6 @@
 import React from 'react'
 import Container from "@mui/material/Container";
-import { Grid, Paper } from "@mui/material";
+import { Grid,  } from "@mui/material";
 import {
   Table,
   TableBody,
@@ -18,36 +18,27 @@ import axios from "axios";
 const SubmissionFlight = () => {
   const [submissions, setSubmission] = React.useState([]);
   const [status,setStatus]=React.useState("")
-  const handleDownloadImages = (imageUrls, downloadFileName) => {
-  console.log("imageurls",imageUrls)
-  if (imageUrls && imageUrls.length > 0) {
-    const links = imageUrls.map((imageUrl, index) => ({
-      href: imageUrl,
-      download: `${downloadFileName}_${index + 1}.png`,
-    }));
-    console.log("links",links)
-  //  const link = document.createElement("a");
-    const anchor = document.createElement("a");
-    anchor.href = links[0].href;
-    anchor.target = "_blank";
-    anchor.download = links[0].download; // Set the desired file name
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
-    // Create links and append them to the document
-    // links.forEach((linkInfo) => {
-   
-    //   link.href = linkInfo.href;
-    //   link.target = "_blank";
-    //   link.download = linkInfo.download;
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   document.body.removeChild(link);
-    // });
-  } else {
-    console.error("Passport images not available for download.");
-  }
-};
+ const handleDownloadImages = (pdfUrls, downloadFileName) => {
+   if (pdfUrls && pdfUrls.length > 0) {
+     const links = pdfUrls.map((pdfUrl, index) => ({
+       href: pdfUrl,
+       download: `${downloadFileName}_${index + 1}.pdf`,
+     }));
+
+     links.forEach((linkInfo) => {
+       const link = document.createElement("a");
+       link.href = linkInfo.href;
+       link.target = "_blank";
+       link.download = linkInfo.download;
+       document.body.appendChild(link);
+       link.click();
+       document.body.removeChild(link);
+     });
+   } else {
+     console.error("PDF files not available for download.");
+   }
+ };
+
   const handle = async (event, submissionId) => {
     const newStatus = event.target.value;
 

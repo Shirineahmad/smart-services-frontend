@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const pages = ["Services", "About Us", "Contact Us"];
+const pages = ["Services", "About Us"];
 const settings = ["Profile", "Logout"];
 
 function Header() {
@@ -122,7 +122,7 @@ function Header() {
                     textDecoration: "none",
                   }}
                 >
-                  Shiro
+                  Smart
                 </Typography>
                 <Typography
                   variant="h4"
@@ -139,7 +139,7 @@ function Header() {
                     textDecoration: "none",
                   }}
                 >
-                  Group
+                  Services
                 </Typography>
               </Box>{" "}
             </Link>
@@ -214,6 +214,16 @@ function Header() {
                   {page}
                 </Button>
               ))}
+                <Link to="/ContactUs" style={{ textDecoration: "none" }}>
+                <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
+                  Contact Us
+                </Button>
+              </Link>
+              <Link to="/ContactUs" style={{ textDecoration: "none" }}>
+                <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
+                  Contact Us
+                </Button>
+              </Link>
               <Link to="/Apply" style={{ textDecoration: "none" }}>
                 <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
                   Apply
@@ -312,6 +322,11 @@ function Header() {
                 {page}
               </Button>
             ))}
+            <Link to="/ContactUs" style={{ textDecoration: "none" }}>
+              <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
+                Contact Us
+              </Button>
+            </Link>
             <Link to="/Apply" style={{ textDecoration: "none" }}>
               <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
                 Apply

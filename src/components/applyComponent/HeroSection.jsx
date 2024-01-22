@@ -14,7 +14,7 @@ import FlightSection from "./FlightSection";
 import imageBack from "../../images/pexels-porapak-apichodilok-346885.jpg"
 import VisaSection from "./VisaSection";
 import InsuranceSection from "./InsuranceSection";
-
+import { useNavigate } from "react-router-dom";
 const AntTabs = styled(Tabs)({
   borderBottom: "1px solid #e8e8e8",
   "& .MuiTabs-indicator": {
@@ -71,6 +71,7 @@ const StyledTabs = styled((props) => (
 
 export default function CustomizedTabs() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const value = useSelector((state) => state.slider.value);
   const servicesList = useSelector((state) => state.slider.servicesList);
 
@@ -154,15 +155,23 @@ export default function CustomizedTabs() {
             ))}
           </AntTabs>
         </Box>
-        <Box sx={{ bgcolor: "#ddf7e3", width: "1200px" , display:"flex", justifyContent:"center"}}>
+        <Box
+          sx={{
+            bgcolor: "#ddf7e3",
+            width: "1200px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <StyledTabs
             value={value}
             onChange={handleChange}
-            sx={{ width: "100%",  justifyContent:"center" ,display:"flex", }}
+            sx={{ width: "100%", justifyContent: "center", display: "flex" }}
           >
             {value === 0 && <VisaSection />}
-            {value === 1 && <InsuranceSection />}
+            {value === 1 &&  navigate("/LanguageExam")}
             {value === 2 && <FlightSection />}
+            {/* {value === 3 && <Link to="/LanguageExam" />} */}
           </StyledTabs>
         </Box>
       </Box>

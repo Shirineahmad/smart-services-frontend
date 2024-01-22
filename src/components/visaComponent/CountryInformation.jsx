@@ -8,7 +8,7 @@ const CountryInformation = ({ countryData }) => {
   return (
     <div>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4, ml: 0 }}>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={{width:"100%"}}>
           {/* Chart */}
           <Grid item xs={12} md={8} lg={9}>
             <Paper
@@ -17,6 +17,7 @@ const CountryInformation = ({ countryData }) => {
                 display: "flex",
                 flexDirection: "column",
                 height: 140,
+                width: "100%",
               }}
             >
               <Typography variant="h6" color="#DF2E38">

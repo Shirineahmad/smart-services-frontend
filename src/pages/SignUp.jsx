@@ -18,6 +18,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
+import { TurnedInNotOutlined } from "@mui/icons-material";
 function Copyright(props) {
 
   return (
@@ -50,7 +51,7 @@ export default function SignUp() {
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [role, setRole] = React.useState("client");
   const [phoneError, setPhoneError] = React.useState("");
-    const [error, setError] =React.useState(null);
+    const [error, setError] =React.useState("");
     const [showConfirmEmail, setShowConfirmEmail] = React.useState(false);
    const handlePhoneChange = (e) => {
      const value = e.target.value;
@@ -125,11 +126,11 @@ const validateInput = () => {
        localStorage.setItem("userId", response.data.userId);
        if (response.status === 200) {
          console.log("Registration successful!");
-         setShowConfirmEmail(true);
+         setShowConfirmEmail(false);
        }
      } catch (error) {
        setError(error.response.data.error);
-       setShowConfirmEmail(false);
+       setShowConfirmEmail(true);
      }
    };
 
