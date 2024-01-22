@@ -6,13 +6,6 @@ import HeroLanguageExam from '../components/LanguageExam/HeroLanguageExam';
 import {
   Typography,
   Box,
-  Grid,
-  Paper,
-  Button,
-  TextareaAutosize,
-  TextField,
-  MenuItem,
-  OutlinedInput,
 } from "@mui/material";
 const LanguageExam = () => {
   return (
@@ -51,23 +44,9 @@ const LanguageExam = () => {
             textAlign: "center",
           }}
         >
-          Contact Us
+          Language Exam
         </Typography>
-        <Typography
-          variant="h4"
-          sx={{
-            position: "absolute",
-            fontFamily: "popins",
-            color: "#FFFFFF",
-            fontWeight: "bold",
-            top: "60%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-          }}
-        >
-          Have any questions? We’d love to hear from you.
-        </Typography>
+      
       </Box>
       <HeroLanguageExam/>
       <Footer />
