@@ -60,13 +60,9 @@ const StyledTabs = styled((props) => (
     backgroundColor: "transparent",
   },
   "& .MuiTabs-flexContainer": {
-    
     justifyContent: "center",
-  
   },
 });
-
-
 
 export default function HeroSection() {
   const dispatch = useDispatch();
@@ -78,7 +74,7 @@ export default function HeroSection() {
     const fetchServices = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.01:8000/services/getAll"
+          `https://smart-services-backend-test5.onrender.com/services/getAll`
         );
         console.log("response.data", response.data);
         if (response.data.success) {
@@ -93,7 +89,7 @@ export default function HeroSection() {
 
     fetchServices();
   }, [dispatch]);
-  
+
   const handleIcon = (name) => {
     switch (name) {
       case "Flight":
@@ -116,7 +112,6 @@ export default function HeroSection() {
     dispatch(setValue((prevValue, servicesListLength) => newValue));
   };
   return (
-    
     <Box
       sx={{
         display: "flex",

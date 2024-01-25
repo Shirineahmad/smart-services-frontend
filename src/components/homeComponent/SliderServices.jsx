@@ -1,4 +1,4 @@
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -9,7 +9,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setValue, setServicesList } from "../../store/sliderSlice";
-
 
 const AntTabs = styled(Tabs)({
   borderBottom: "1px solid #e8e8e8",
@@ -43,58 +42,57 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(
   })
 );
 
-
 function SliderServices() {
- const dispatch = useDispatch();
- const value = useSelector((state) => state.slider.value);
- const servicesList = useSelector((state) => state.slider.servicesList);
+  const dispatch = useDispatch();
+  const value = useSelector((state) => state.slider.value);
+  const servicesList = useSelector((state) => state.slider.servicesList);
 
- useEffect(() => {
-   const fetchServices = async () => {
-     try {
-       const response = await axios.get("http://127.0.01:8000/services/getAll");
-       console.log("response.data", response.data);
-       if (response.data.success) {
-         dispatch(setServicesList(response.data.data));
-       } else {
-         console.error("Error fetching products:", response.data.message);
-       }
-     } catch (error) {
-       console.error("Error fetching products:", error.message);
-     }
-   };
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(
+          `https://smart-services-backend-test5.onrender.com/services/getAll`
+        );
+        console.log("response.data", response.data);
+        if (response.data.success) {
+          dispatch(setServicesList(response.data.data));
+        } else {
+          console.error("Error fetching products:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error.message);
+      }
+    };
 
-   fetchServices();
- }, [dispatch]);
+    fetchServices();
+  }, [dispatch]);
 
- const handleChange = (event, newValue) => {
-   console.log("newValue", newValue);
-   console.log("event", event);
-   dispatch(setValue((prevValue, servicesListLength) => newValue));
- };
+  const handleChange = (event, newValue) => {
+    console.log("newValue", newValue);
+    console.log("event", event);
+    dispatch(setValue((prevValue, servicesListLength) => newValue));
+  };
 
+  const handleArrowClick = (direction) => {
+    console.log("handleArrowClick triggered with direction:", direction);
+    console.log("servicesList:", servicesList);
 
- const handleArrowClick = (direction) => {
-   console.log("handleArrowClick triggered with direction:", direction);
-   console.log("servicesList:", servicesList);
+    if (direction === "prev") {
+      // If direction is "prev", update value accordingly
+      dispatch(
+        setValue(
+          (prevValue) =>
+            (prevValue - 1 + servicesList.length) % servicesList.length
+        )
+      );
+    } else {
+      // If direction is not "prev", update value accordingly
+      dispatch(setValue((prevValue) => (prevValue + 1) % servicesList.length));
+    }
+  };
 
-   if (direction === "prev") {
-     // If direction is "prev", update value accordingly
-     dispatch(
-       setValue(
-         (prevValue) =>
-           (prevValue - 1 + servicesList.length) % servicesList.length
-       )
-     );
-   } else {
-     // If direction is not "prev", update value accordingly
-     dispatch(setValue((prevValue) => (prevValue + 1) % servicesList.length));
-   }
- };
-
-
- console.log("servicesList:", servicesList);
- console.log("value:", value);
+  console.log("servicesList:", servicesList);
+  console.log("value:", value);
 
   return (
     <Box
@@ -168,20 +166,20 @@ function SliderServices() {
             width: "100%",
             height: "100%",
             marginTop: 5,
-            marginRight:5
+            marginRight: 5,
           }}
         >
           {/* <Box sx={{ p: 3, height: "100%", boxShadow: 3, width: "75%" }}> */}
-            {servicesList.length > 0 &&
-              servicesList[value] &&
-              servicesList[value].images &&
-              servicesList[value].images[0] && (
-                <img
-                  src={servicesList[value].images[0]}
-                  alt="no"
-                  style={{ maxWidth: "100%", height: "100%" }}
-                />
-              )}
+          {servicesList.length > 0 &&
+            servicesList[value] &&
+            servicesList[value].images &&
+            servicesList[value].images[0] && (
+              <img
+                src={servicesList[value].images[0]}
+                alt="no"
+                style={{ maxWidth: "100%", height: "100%" }}
+              />
+            )}
           {/* </Box> */}
         </Box>
       </Box>
@@ -196,7 +194,7 @@ function SliderServices() {
           padding: 1,
           color: "red",
           marginBottom: 2,
-          marginLeft:5,
+          marginLeft: 5,
           borderRadius: "16px",
         }}
       >

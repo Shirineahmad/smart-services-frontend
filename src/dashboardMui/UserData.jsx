@@ -6,7 +6,9 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow,Button,TextField
+  TableRow,
+  Button,
+  TextField,
 } from "@mui/material";
 import axios from "axios";
 
@@ -14,37 +16,36 @@ const UserData = () => {
   const [dataUser, setDataUser] = useState([]);
   const [resultSearch, setResultSearch] = React.useState([]);
   const [showSearch, setShowSearch] = React.useState(false);
-   const [searchName, setSearchName] = React.useState("");
+  const [searchName, setSearchName] = React.useState("");
   const searchUser = (e) => {
-     e.preventDefault();
-     setShowSearch(true);
+    e.preventDefault();
+    setShowSearch(true);
 
-     const result = dataUser
-       .filter((data) => {
-         const userFirstName = (data.firstName || "").toLowerCase();
-         const userLastName = (data.lastName || "").toLowerCase();
+    const result = dataUser.filter((data) => {
+      const userFirstName = (data.firstName || "").toLowerCase();
+      const userLastName = (data.lastName || "").toLowerCase();
 
-         const [searchFirstName, searchLastName] = searchName
-           .toLowerCase()
-           .split(" ");
+      const [searchFirstName, searchLastName] = searchName
+        .toLowerCase()
+        .split(" ");
 
-         return (
-           userFirstName.includes(searchFirstName) ||
-           userFirstName.includes(searchLastName) ||
-           userLastName.includes(searchFirstName) ||
-           userLastName.includes(searchLastName)
-         );
-       });
+      return (
+        userFirstName.includes(searchFirstName) ||
+        userFirstName.includes(searchLastName) ||
+        userLastName.includes(searchFirstName) ||
+        userLastName.includes(searchLastName)
+      );
+    });
 
-     setResultSearch(result);
-   };
- 
-   
+    setResultSearch(result);
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://127.0.01:8000/user/getAll");
+        const response = await axios.get(
+          `https://smart-services-backend-test5.onrender.com/user/getAll`
+        );
         console.log("response.data", response.data.data);
         if (response.data.success) {
           setDataUser(

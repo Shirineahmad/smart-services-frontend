@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import Container from "@mui/material/Container";
 import {
   Grid,
@@ -13,16 +13,16 @@ import {
 } from "@mui/material";
 import axios from "axios";
 const ApplyVisa = ({ visaData }) => {
-  console.log("in apply",visaData)
-   const [images, setImages] = React.useState([]);
-   const [travelers, setTravelers] = React.useState({
-     Adult: 0,
-     Child: 0,
-     Infant: 0,
-   });
+  console.log("in apply", visaData);
+  const [images, setImages] = React.useState([]);
+  const [travelers, setTravelers] = React.useState({
+    Adult: 0,
+    Child: 0,
+    Infant: 0,
+  });
   const names = ["Adult", "Child", "Infant"];
   const [error, setError] = React.useState(null);
-  const [visaId, setVisaId] = React.useState("")
+  const [visaId, setVisaId] = React.useState("");
   const handleChangeChip = (event) => {
     const selectedTravelers = event.target.value;
 
@@ -34,38 +34,35 @@ const ApplyVisa = ({ visaData }) => {
 
     setTravelers(updatedTravelers);
   };
-  
 
   const handleFileUpload = (e) => {
     const newFile = e.target.files[0];
 
     if (newFile) {
-      setImages((prevImages) => [...prevImages,newFile]);
+      setImages((prevImages) => [...prevImages, newFile]);
     }
   };
 
-  
-
-   const validateInput = () => {
-     if (!visaId) {
-      console.log("visaId",visaId);
-       setError("Choose way is required.");
-       return false;
-     }
-     if (images.length===0) {
-      setError("files is required.");
-        console.log("images", images);
+  const validateInput = () => {
+    if (!visaId) {
+      console.log("visaId", visaId);
+      setError("Choose way is required.");
       return false;
     }
-     if (!travelers) {
-       setError("travelers is required.");
-        console.log("travelers", travelers);
-       return false;
-     }
-    
-     return true;
+    if (images.length === 0) {
+      setError("files is required.");
+      console.log("images", images);
+      return false;
+    }
+    if (!travelers) {
+      setError("travelers is required.");
+      console.log("travelers", travelers);
+      return false;
+    }
+
+    return true;
   };
-    const handleVisaType = (event) => {
+  const handleVisaType = (event) => {
     setVisaId(event.target.value);
   };
   const userId = localStorage.getItem("userId");
@@ -74,36 +71,33 @@ const ApplyVisa = ({ visaData }) => {
     e.preventDefault();
 
     if (!validateInput()) {
-      console.log(error)
+      console.log(error);
       return;
     }
-console.log("userId", userId);
-console.log("visaId", visaId);
+    console.log("userId", userId);
+    console.log("visaId", visaId);
 
-console.log("images", images);
-console.log("travelers", travelers);
+    console.log("images", images);
+    console.log("travelers", travelers);
 
-    
     try {
       const formData = new FormData();
       formData.append("userId", userId);
       formData.append("visaId", visaId);
-     formData.append("statusVisa", "pending");
+      formData.append("statusVisa", "pending");
 
-    
       images.forEach((image) => {
         formData.append(`documents`, image);
       });
 
-    Object.entries(travelers).forEach(([key, value]) => {
-      formData.append(`person[${key}]`, value);
-    });
-
+      Object.entries(travelers).forEach(([key, value]) => {
+        formData.append(`person[${key}]`, value);
+      });
 
       console.log("formData", formData);
 
       const flightResponse = await axios.post(
-        "http://localhost:8000/submissionVisa/create",
+        `https://smart-services-backend-test5.onrender.com/submissionVisa/create`,
         formData,
         {
           headers: {
@@ -138,7 +132,6 @@ console.log("travelers", travelers);
       }
     }
   };
-
 
   return (
     <div>
@@ -208,7 +201,7 @@ console.log("travelers", travelers);
                       input={<OutlinedInput />}
                       renderValue={(selected) => {
                         if (selected.length === 0) {
-                          return <em>Placeholder</em>;
+                          return <em>Select Travelers</em>;
                         }
                         return selected
                           .map((item) => `${item.name}: ${item.count}`)
@@ -251,8 +244,8 @@ console.log("travelers", travelers);
                               type="number"
                               value={travelers[name]}
                               onChange={(e) => {
-                                const updatedCount =
-                                  parseInt(e.target.value, 10) || 0;
+                               const updatedCount =
+                                 parseInt(e.target.value, 10) || 0;
                                 const updatedTravelers = {
                                   ...travelers,
                                   [name]: Math.max(updatedCount, 0), // Ensure the value is not negative
@@ -313,6 +306,6 @@ console.log("travelers", travelers);
       </Container>
     </div>
   );
-}
+};
 
-export default ApplyVisa
+export default ApplyVisa;

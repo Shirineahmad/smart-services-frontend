@@ -1,32 +1,32 @@
 import React from "react";
-import { Box, Typography,  } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { setServicesList } from "../../store/sliderSlice";
 import { useEffect } from "react";
 import axios from "axios";
 const HeroVisa = ({ countryName }) => {
-    const servicesList = useSelector((state) => state.slider.servicesList);
-    const dispatch = useDispatch();
-      
- useEffect(() => {
-   const fetchServices = async () => {
-     try {
-       const response = await axios.get(
-         "http://127.0.01:8000//services/getByName/Visa"
-       );
-       console.log("response.data", response.data);
-       if (response.data.success) {
-         dispatch(setServicesList(response.data.data));
-       } else {
-         console.error("Error fetching products:", response.data.message);
-       }
-     } catch (error) {
-       console.error("Error fetching products:", error.message);
-     }
-   };
+  const servicesList = useSelector((state) => state.slider.servicesList);
+  const dispatch = useDispatch();
 
-   fetchServices();
- }, [dispatch]);
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(
+          `https://smart-services-backend-test5.onrender.com/services/getByName/Visa`
+        );
+        console.log("response.data", response.data);
+        if (response.data.success) {
+          dispatch(setServicesList(response.data.data));
+        } else {
+          console.error("Error fetching products:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error.message);
+      }
+    };
+
+    fetchServices();
+  }, [dispatch]);
   return (
     <div>
       {servicesList &&

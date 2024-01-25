@@ -14,13 +14,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import { useNavigate } from "react-router-dom";
 
-
-
 const VisaSection = () => {
   const [error, setError] = React.useState(null);
   const [country, setCountry] = React.useState("");
-   const [showError, setShowError] = React.useState(false);
-    const navigate = useNavigate();
+  const [showError, setShowError] = React.useState(false);
+  const navigate = useNavigate();
   const handleLeaving = (event) => {
     setCountry(event.target.value);
   };
@@ -41,17 +39,19 @@ const VisaSection = () => {
     }
     try {
       const response = await axios.get(
-        `http://127.0.01:8000/visa/getByCountryName/${country}`
+        `https://smart-services-backend-test5.onrender.com/visa/getByCountryName/${country}`
       );
-       const responseInformation = await axios.get(
-         `http://127.0.01:8000/country/getByName/${country}`
-       );
+      const responseInformation = await axios.get(
+        `https://smart-services-backend-test5.onrender.com/country/getByName/${country}`
+      );
       console.log("visa1", response.data);
-console.log("rsponse", responseInformation.data);
+      console.log("rsponse", responseInformation.data);
       if (response.data.success && responseInformation.data.success) {
-        
         console.log("visa2", response.data.data);
- console.log("responseInformation to be sent:", responseInformation.data.data);
+        console.log(
+          "responseInformation to be sent:",
+          responseInformation.data.data
+        );
         // Navigate to the "visa" page with the visa information
         navigate("/visa", {
           state: {

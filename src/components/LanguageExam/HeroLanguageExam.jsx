@@ -9,7 +9,7 @@ import {
   Typography,
   Box,
   Button,
-  TextField
+  TextField,
 } from "@mui/material";
 
 import { useEffect } from "react";
@@ -31,13 +31,14 @@ const HeroLanguageExam = () => {
   const token = localStorage.getItem("token");
   const [images, setImages] = React.useState([]);
   const [message, setMessage] = React.useState("");
-   const [additionalComment, setAdditionalComment] = React.useState("");
-
+  const [additionalComment, setAdditionalComment] = React.useState("");
 
   useEffect(() => {
     const fetchExam = async () => {
       try {
-        const response = await axios.get("http://127.0.01:8000/exam/getAll");
+        const response = await axios.get(
+          `https://smart-services-backend-test5.onrender.com/exam/getAll`
+        );
         console.log("response.data", response.data.data);
         if (response.data.success) {
           setExams(response.data.data);
@@ -143,7 +144,7 @@ const HeroLanguageExam = () => {
 
       console.log("newExam", formData);
       const examResponse = await axios.post(
-        "http://localhost:8000/submissionExam/create",
+        `https://smart-services-backend-test5.onrender.com/submissionExam/create`,
         formData,
         {
           headers: {
@@ -152,7 +153,7 @@ const HeroLanguageExam = () => {
           },
         }
       );
-setMessage("submitting suucessfully")
+      setMessage("submitting suucessfully");
       console.log("After submitting:", examResponse.data);
 
       // Reset form fields and state
@@ -163,7 +164,7 @@ setMessage("submitting suucessfully")
       setUrgentNumber("");
       setAditionalComment(" ");
       setImages("");
-      setMessage("")
+      setMessage("");
     } catch (error) {
       console.error("Error creating order:", error.message);
       if (error.response) {
@@ -255,7 +256,7 @@ setMessage("submitting suucessfully")
               input={<OutlinedInput />}
               renderValue={(selected) => {
                 if (selected.length === 0) {
-                  return <em>Select type visa</em>;
+                  return <em>Select Institute </em>;
                 }
 
                 return selected;

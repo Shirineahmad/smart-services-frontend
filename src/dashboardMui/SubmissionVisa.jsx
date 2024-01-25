@@ -76,7 +76,7 @@ const SubmissionVisa = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/submissionVisa/update/${submissionId}`,
+        `https://smart-services-backend-test5.onrender.com/submissionVisa/update/${submissionId}`,
         { statusFlight: newStatus },
         {
           headers: {
@@ -104,7 +104,7 @@ const SubmissionVisa = () => {
     const fetchSubmission = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.01:8000/submissionVisa/getAll"
+          `https://smart-services-backend-test5.onrender.com/submissionVisa/getAll`
         );
         console.log("response.data viss", response.data.data);
         if (response.data.success) {
@@ -184,13 +184,13 @@ const SubmissionVisa = () => {
                             .split("T")[0]
                         }
                       </TableCell>
-
-                      <TableCell>
-                        Adult:{submission.visaId.person.Adult},Child:
-                        {submission.visaId.person.Child},Infant:
-                        {submission.visaId.person.Infant}
-                      </TableCell>
-
+                      {submission.person && submission.person.Adult > 0 && (
+                        <TableCell>
+                          Adult:{submission.person.Adult} Child:
+                          {submission.person.child} Infant:
+                          {submission.person.infant}
+                        </TableCell>
+                      )}
                       {submission.documents &&
                         submission.documents.length > 0 &&
                         submission.documents.map((doc, index) => (
@@ -242,11 +242,13 @@ const SubmissionVisa = () => {
                         }
                       </TableCell>
 
-                      <TableCell>
-                        Adult:{submission.person.Adult},Child:
-                        {submission.person.Child},Infant:
-                        {submission.person.Infant}
-                      </TableCell>
+                      {submission.person && submission.person.Adult > 0 && (
+                        <TableCell>
+                          Adult:{submission.person.Adult} Child:
+                          {submission.person.child} Infant:
+                          {submission.person.infant}
+                        </TableCell>
+                      )}
 
                       {submission.documents &&
                         submission.documents.length > 0 &&

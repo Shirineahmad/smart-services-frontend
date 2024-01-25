@@ -100,7 +100,7 @@ export default function SignUp() {
     console.log(user);
     try {
       const response = await axios.post(
-        `http://localhost:8000/user/register`,
+        `https://smart-services-backend-test5.onrender.com/user/register`,
         user,
         {
           headers: {
@@ -126,8 +126,11 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-        <IconButton onClick={goToHome} style={{top:"114px", color:"#DF2E38"}}>
-          <ArrowBackIcon /> Back 
+        <IconButton
+          onClick={goToHome}
+          style={{ top: "114px", color: "#DF2E38" }}
+        >
+          <ArrowBackIcon /> Back
         </IconButton>
         <CssBaseline />
         <Box

@@ -19,7 +19,7 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 
 const userId = localStorage.getItem("userId");
- const token = localStorage.getItem('token');
+const token = localStorage.getItem("token");
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -37,15 +37,15 @@ const FlightSection = () => {
   const [way, setWay] = React.useState("");
   const [leavingFrom, setLeavingFrom] = React.useState("");
   const [arriving, setArriving] = React.useState("");
-    const [leavingDate, setLeavingDate] = React.useState("");
-    const [arrivingDate, setArrivingDate] = React.useState("");
+  const [leavingDate, setLeavingDate] = React.useState("");
+  const [arrivingDate, setArrivingDate] = React.useState("");
   const [classFlight, setClassFlight] = React.useState("");
-  const[images,setImages]=React.useState([])
- const [travelers, setTravelers] = React.useState({
-   Adult: 0,
-   Child: 0,
-   Infant: 0,
- });
+  const [images, setImages] = React.useState([]);
+  const [travelers, setTravelers] = React.useState({
+    Adult: 0,
+    Child: 0,
+    Infant: 0,
+  });
   const [additionalComment, setAdditionalComment] = React.useState("");
   const [error, setError] = React.useState("");
 
@@ -59,7 +59,7 @@ const FlightSection = () => {
   const handleClass = (event) => {
     setClassFlight(event.target.value);
   };
-   const handleLeavingDateChange = (date) => {
+  const handleLeavingDateChange = (date) => {
     // Handle changes in leavingDate
     setLeavingDate(date);
   };
@@ -68,29 +68,25 @@ const FlightSection = () => {
     // Handle changes in arrivingDate
     setArrivingDate(date);
   };
-const handleChangeChip = (event) => {
-  const selectedTravelers = event.target.value;
+  const handleChangeChip = (event) => {
+    const selectedTravelers = event.target.value;
 
-  // Update the state with the selected travelers
-  const updatedTravelers = {};
-  selectedTravelers.forEach((item) => {
-    updatedTravelers[item.name] = item.count;
-  });
+    // Update the state with the selected travelers
+    const updatedTravelers = {};
+    selectedTravelers.forEach((item) => {
+      updatedTravelers[item.name] = item.count;
+    });
 
-  setTravelers(updatedTravelers);
+    setTravelers(updatedTravelers);
   };
-  
+
   const handleFileUpload = (e) => {
     const newImages = e.target.files[0];
 
-    if (newImages ) {
+    if (newImages) {
       setImages((prevImages) => [...prevImages, newImages]);
     }
   };
-  
-
-
-  
 
   const validateInput = () => {
     if (!way) {
@@ -114,47 +110,46 @@ const handleChangeChip = (event) => {
       setError("travelers is required.");
       return false;
     }
-     if (!images) {
+    if (!images) {
       setError("file is required.");
       return false;
     }
 
     return true;
   };
-   React.useEffect(() => {
-     console.log("Updated travelers:", travelers);
-   }, [travelers]);  
-  
+  React.useEffect(() => {
+    console.log("Updated travelers:", travelers);
+  }, [travelers]);
+
   const handleConfirm = async (e) => {
     e.preventDefault();
     if (!validateInput()) {
       return;
     }
-console.log("images",images)
+    console.log("images", images);
     try {
-    const formData = new FormData();
-    formData.append("userId", userId);
-    formData.append("type", way);
-    formData.append("leavingFrom", leavingFrom);
-    formData.append("goingTo", arriving);
-    formData.append("classFlight", classFlight);
-    formData.append("additionalComment", additionalComment);
-    formData.append("leavingDate", leavingDate);
-    formData.append("arrivingDate", arrivingDate);;
-   formData.append("statusFlight", "pending");
-    // Append each image in the images array to the formData under the 'passport' key
-    images.forEach((image) => {
-      formData.append(`passport`, image);
-    });
+      const formData = new FormData();
+      formData.append("userId", userId);
+      formData.append("type", way);
+      formData.append("leavingFrom", leavingFrom);
+      formData.append("goingTo", arriving);
+      formData.append("classFlight", classFlight);
+      formData.append("additionalComment", additionalComment);
+      formData.append("leavingDate", leavingDate);
+      formData.append("arrivingDate", arrivingDate);
+      formData.append("statusFlight", "pending");
+      // Append each image in the images array to the formData under the 'passport' key
+      images.forEach((image) => {
+        formData.append(`passport`, image);
+      });
 
-   Object.entries(travelers).forEach(([key, value]) => {
-     formData.append(`person[${key}]`, value);
-   });
-
+      Object.entries(travelers).forEach(([key, value]) => {
+        formData.append(`person[${key}]`, value);
+      });
 
       console.log("newFlight", formData);
       const flightResponse = await axios.post(
-        "http://localhost:8000/submissionFlight/create",
+        `https://smart-services-backend-test5.onrender.com/submissionFlight/create`,
         formData,
         {
           headers: {
@@ -163,7 +158,7 @@ console.log("images",images)
           },
         }
       );
-setError("submitting successfully");
+      setError("submitting successfully");
       console.log("After submitting:", flightResponse.data);
 
       // Reset form fields and state
@@ -171,7 +166,7 @@ setError("submitting successfully");
       setLeavingFrom("");
       setArriving("");
       setClassFlight("");
-      setLeavingDate("")
+      setLeavingDate("");
       setArrivingDate("");
       setTravelers({
         Adult: 0,
@@ -180,20 +175,20 @@ setError("submitting successfully");
       });
       setAdditionalComment("");
       setImages([]);
-      setError("")
+      setError("");
     } catch (error) {
-     console.error("Error creating order:", error.message);
-     if (error.response) {
-       // The request was made and the server responded with a status code
-       console.error("Detailed error response:", error.response.data);
-       console.error("Status code:", error.response.status);
-     } else if (error.request) {
-       // The request was made but no response was received
-       console.error("No response received");
-     } else {
-       // Something happened in setting up the request that triggered an Error
-       console.error("Error:", error.message);
-     }
+      console.error("Error creating order:", error.message);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.error("Detailed error response:", error.response.data);
+        console.error("Status code:", error.response.status);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error:", error.message);
+      }
     }
   };
 
@@ -374,7 +369,7 @@ setError("submitting successfully");
               }}
             >
               <MenuItem disabled value="">
-                <em>Placeholder</em>
+                <em>Select Travelers</em>
               </MenuItem>
               {names.map((name) => (
                 <MenuItem

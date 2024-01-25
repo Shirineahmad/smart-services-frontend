@@ -24,21 +24,17 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const defaultTheme = createTheme();
 
-
 export default function SignIn() {
-   
- 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showFailLogIn, setShowFailLogIn] = useState(false);
   const [failMessage, setFailMessage] = useState("");
-  
-  
- const navigate = useNavigate();
- const goToHome = () => {
-   navigate("/");
- };
+
+  const navigate = useNavigate();
+  const goToHome = () => {
+    navigate("/");
+  };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -53,11 +49,9 @@ export default function SignIn() {
       return;
     }
 
-    
-
     try {
       const response = await axios.post(
-        `http://localhost:8000/user/login`,
+        `https://smart-services-backend-test5.onrender.com/user/login`,
         {
           email,
           password,
@@ -89,7 +83,6 @@ export default function SignIn() {
         setShowFailLogIn(false);
         setFailMessage("");
       } else {
-        
         console.log("Login failed:", data.message);
         setShowFailLogIn(true);
         setFailMessage(data.message);
@@ -141,7 +134,7 @@ export default function SignIn() {
           onClick={goToHome}
           style={{ top: "114px", color: "#DF2E38" }}
         >
-          <ArrowBackIcon /> Back 
+          <ArrowBackIcon /> Back
         </IconButton>
         <CssBaseline sx={{ color: "green" }} />
         <Box
@@ -211,7 +204,6 @@ export default function SignIn() {
             <Button
               type="submit"
               fullWidth
-             
               style={{
                 marginTop: 5,
                 marginBottom: 2,

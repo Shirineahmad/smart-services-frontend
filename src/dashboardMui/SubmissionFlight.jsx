@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 import Container from "@mui/material/Container";
-import { Grid,  } from "@mui/material";
+import { Grid } from "@mui/material";
 import {
   Table,
   TableBody,
@@ -10,45 +10,44 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
-  Button,TextField
+  Button,
+  TextField,
 } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
-  const token = localStorage.getItem("token");
-   
+const token = localStorage.getItem("token");
+
 const SubmissionFlight = () => {
   const [submissions, setSubmission] = React.useState([]);
-  const [status, setStatus] = React.useState("")
+  const [status, setStatus] = React.useState("");
   const [resultSearch, setResultSearch] = React.useState([]);
   const [showSearch, setShowSearch] = React.useState(false);
-   const [searchName, setSearchName] = React.useState("");
- const handleDownloadImages = (pdfUrls, downloadFileName) => {
-   if (pdfUrls && pdfUrls.length > 0) {
-     const links = pdfUrls.map((pdfUrl, index) => ({
-       href: pdfUrl,
-       download: `${downloadFileName}_${index + 1}.pdf`,
-     }));
+  const [searchName, setSearchName] = React.useState("");
+  const handleDownloadImages = (pdfUrls, downloadFileName) => {
+    if (pdfUrls && pdfUrls.length > 0) {
+      const links = pdfUrls.map((pdfUrl, index) => ({
+        href: pdfUrl,
+        download: `${downloadFileName}_${index + 1}.pdf`,
+      }));
 
-     links.forEach((linkInfo) => {
-       const link = document.createElement("a");
-       link.href = linkInfo.href;
-       link.target = "_blank";
-       link.download = linkInfo.download;
-       document.body.appendChild(link);
-       link.click();
-       document.body.removeChild(link);
-     });
-   } else {
-     console.error("PDF files not available for download.");
-   }
- };
-const searchUser = (e) => {
-  e.preventDefault();
-  setShowSearch(true);
+      links.forEach((linkInfo) => {
+        const link = document.createElement("a");
+        link.href = linkInfo.href;
+        link.target = "_blank";
+        link.download = linkInfo.download;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    } else {
+      console.error("PDF files not available for download.");
+    }
+  };
+  const searchUser = (e) => {
+    e.preventDefault();
+    setShowSearch(true);
 
-  const result = submissions
-   
-    .filter((submission) => {
+    const result = submissions.filter((submission) => {
       const userFirstName = (submission.userId.firstName || "").toLowerCase();
       const userLastName = (submission.userId.lastName || "").toLowerCase();
 
@@ -64,8 +63,8 @@ const searchUser = (e) => {
       );
     });
 
-  setResultSearch(result);
-};
+    setResultSearch(result);
+  };
   const handle = async (event, submissionId) => {
     const newStatus = event.target.value;
 
@@ -77,7 +76,7 @@ const searchUser = (e) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/submissionFlight/update/${submissionId}`,
+        `https://smart-services-backend-test5.onrender.com/submissionFlight/update/${submissionId}`,
         { statusFlight: newStatus },
         {
           headers: {
@@ -88,8 +87,6 @@ const searchUser = (e) => {
       );
       console.log("Response after update request:", response);
       console.log("Order updated successfully");
-     
-     
     } catch (error) {
       if (error.response) {
         console.error("Server responded with an error:", error.response.data);
@@ -101,13 +98,13 @@ const searchUser = (e) => {
         console.error("Error setting up the request:", error.message);
       }
     }
-  }
+  };
 
   useEffect(() => {
     const fetchSubmission = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.01:8000/submissionFlight/getAll"
+          `https://smart-services-backend-test5.onrender.com/submissionFlight/getAll`
         );
         console.log("response.data", response.data.data);
         if (response.data.success) {
@@ -142,7 +139,8 @@ const searchUser = (e) => {
             variant="contained"
             disabled={!searchName}
             style={{
-              marginLeft: "8px",color:"white",
+              marginLeft: "8px",
+              color: "white",
               backgroundColor: "#DF2E38",
               "&:hover": {
                 backgroundColor: "#5D9C59", // Change to the desired hover color
@@ -336,4 +334,4 @@ const searchUser = (e) => {
   );
 };
 
-export default SubmissionFlight
+export default SubmissionFlight;

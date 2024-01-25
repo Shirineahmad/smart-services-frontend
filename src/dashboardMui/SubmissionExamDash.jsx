@@ -26,34 +26,34 @@ const SubmissionExamDash = () => {
   const [searchName, setSearchName] = React.useState("");
   const [resultSearch, setResultSearch] = React.useState([]);
   const [showSearch, setShowSearch] = React.useState(false);
-// const downloadFiles = async (filePaths, fileName = "pdfs") => {
-//   const promises = filePaths.map(async (filePath) => {
-//     try {
-//       const storageRef = ref(storage, filePath);
-//       const downloadURL = await getDownloadURL(storageRef);
+  // const downloadFiles = async (filePaths, fileName = "pdfs") => {
+  //   const promises = filePaths.map(async (filePath) => {
+  //     try {
+  //       const storageRef = ref(storage, filePath);
+  //       const downloadURL = await getDownloadURL(storageRef);
 
-//       const link = document.createElement("a");
-//       link.href = downloadURL;
-//       link.download = fileName;
+  //       const link = document.createElement("a");
+  //       link.href = downloadURL;
+  //       link.download = fileName;
 
-//       document.body.appendChild(link);
-//       link.click();
-//       document.body.removeChild(link);
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
 
-//       return Promise.resolve();
-//     } catch (error) {
-//       console.error("Error downloading file:", error);
-//       return Promise.reject(error);
-//     }
-//   });
+  //       return Promise.resolve();
+  //     } catch (error) {
+  //       console.error("Error downloading file:", error);
+  //       return Promise.reject(error);
+  //     }
+  //   });
 
-//   try {
-//     await Promise.all(promises);
-//     console.log("All files downloaded successfully");
-//   } catch (error) {
-//     console.error("Error downloading files:", error);
-//   }
-// };
+  //   try {
+  //     await Promise.all(promises);
+  //     console.log("All files downloaded successfully");
+  //   } catch (error) {
+  //     console.error("Error downloading files:", error);
+  //   }
+  // };
 
   const downloadFiles = async (filePaths, fileName = "pdfs") => {
     const promises = filePaths.map(async (filePath) => {
@@ -63,7 +63,7 @@ const SubmissionExamDash = () => {
         console.log("Download URL:", downloadURL); // Log the download URL
 
         const link = document.createElement("a");
-         link.target = "_blank";
+        link.target = "_blank";
         link.href = downloadURL;
         link.download = fileName;
 
@@ -97,7 +97,7 @@ const SubmissionExamDash = () => {
   //     links.forEach((linkInfo) => {
   //       const link = document.createElement("a");
   //       link.href = linkInfo.href;
-            // link.target = "_blank";
+  // link.target = "_blank";
   //       link.download = linkInfo.download;
   //       document.body.appendChild(link);
   //       link.click();
@@ -140,7 +140,7 @@ const SubmissionExamDash = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/submissionExam/update/${submissionId}`,
+        `procsess.env.REACT_APP_API/submissionExam/update/${submissionId}`,
         { statusExam: newStatus },
         {
           headers: {
@@ -168,7 +168,7 @@ const SubmissionExamDash = () => {
     const fetchSubmission = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.01:8000/submissionExam/getAll"
+          `https://smart-services-backend-test5.onrender.com/submissionExam/getAll`
         );
         console.log("response.data", response.data.data);
         if (response.data.success) {

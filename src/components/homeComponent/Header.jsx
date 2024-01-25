@@ -33,7 +33,7 @@ function Header() {
     const fetchServices = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.01:8000/user/getById/${userId}`
+          `https://smart-services-backend-test5.onrender.com8000/user/getById/${userId}`
         );
         console.log("firstName.data", response.data);
         if (response.data.success) {

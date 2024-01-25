@@ -1,35 +1,35 @@
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box"
+import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setServicesList } from "../../store/sliderSlice";
- import { Link } from "react-router-dom";
- import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { Link } from "react-router-dom";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const SectionWeDo = () => {
-    const dispatch = useDispatch();
-    const servicesList = useSelector((state) => state.slider.servicesList);
-     useEffect(() => {
-       const fetchServices = async () => {
-         try {
-           const response = await axios.get(
-             "http://127.0.01:8000/services/getAll"
-           );
-           console.log("response.data", response.data);
-           if (response.data.success) {
-             dispatch(setServicesList(response.data.data));
-           } else {
-             console.error("Error fetching products:", response.data.message);
-           }
-         } catch (error) {
-           console.error("Error fetching products:", error.message);
-         }
-       };
+  const dispatch = useDispatch();
+  const servicesList = useSelector((state) => state.slider.servicesList);
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(
+          `https://smart-services-backend-test5.onrender.com/services/getAll`
+        );
+        console.log("response.data", response.data);
+        if (response.data.success) {
+          dispatch(setServicesList(response.data.data));
+        } else {
+          console.error("Error fetching products:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error.message);
+      }
+    };
 
-       fetchServices();
-     }, [dispatch]);
-    console.log("servicesList:", servicesList);
+    fetchServices();
+  }, [dispatch]);
+  console.log("servicesList:", servicesList);
   return (
     <Box
       sx={{
