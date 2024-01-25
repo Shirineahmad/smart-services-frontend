@@ -23,7 +23,6 @@ const ApplyVisa = ({ visaData }) => {
   const names = ["Adult", "Child", "Infant"];
   const [error, setError] = React.useState(null);
   const [visaId, setVisaId] = React.useState("")
-    
   const handleChangeChip = (event) => {
     const selectedTravelers = event.target.value;
 
@@ -35,6 +34,7 @@ const ApplyVisa = ({ visaData }) => {
 
     setTravelers(updatedTravelers);
   };
+  
 
   const handleFileUpload = (e) => {
     const newFile = e.target.files[0];
@@ -95,8 +95,10 @@ console.log("travelers", travelers);
         formData.append(`documents`, image);
       });
 
-      // Append the travelers object as a JSON string
-      formData.append("person", JSON.stringify(travelers));
+    Object.entries(travelers).forEach(([key, value]) => {
+      formData.append(`person[${key}]`, value);
+    });
+
 
       console.log("formData", formData);
 
@@ -165,7 +167,6 @@ console.log("travelers", travelers);
                     rowGap: "10px",
                   }}
                 >
-                  
                   <Typography variant="h6" sx={{ color: "#DF2E38" }}>
                     {" "}
                     Apply Now
@@ -180,7 +181,11 @@ console.log("travelers", travelers);
                         return <em>Select type visa</em>;
                       }
 
-                      return selected;
+                      // Find the corresponding visa title based on selected _id
+                      const selectedVisa = visaData.find(
+                        (visa) => visa._id === selected
+                      );
+                      return selectedVisa ? selectedVisa.title : "";
                     }}
                   >
                     {visaData &&

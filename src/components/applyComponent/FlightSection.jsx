@@ -34,7 +34,7 @@ const MenuProps = {
 const names = ["Adult", "Child", "Infant"];
 
 const FlightSection = () => {
-  const [way, setWay] = React.useState( "");
+  const [way, setWay] = React.useState("");
   const [leavingFrom, setLeavingFrom] = React.useState("");
   const [arriving, setArriving] = React.useState("");
     const [leavingDate, setLeavingDate] = React.useState("");
@@ -78,7 +78,8 @@ const handleChangeChip = (event) => {
   });
 
   setTravelers(updatedTravelers);
-};
+  };
+  
   const handleFileUpload = (e) => {
     const newImages = e.target.files[0];
 
@@ -146,8 +147,10 @@ console.log("images",images)
       formData.append(`passport`, image);
     });
 
-    // Append the travelers object as a JSON string
-    formData.append("person", JSON.stringify(travelers));
+   Object.entries(travelers).forEach(([key, value]) => {
+     formData.append(`person[${key}]`, value);
+   });
+
 
       console.log("newFlight", formData);
       const flightResponse = await axios.post(
@@ -213,7 +216,7 @@ setError("submitting successfully");
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
-          value={way || "Round Trip"} // Set the default value to "female"
+          value={way} // Set the default value to "female"
           onChange={(event) => setWay(event.target.value)}
           sx={{
             dipslay: "flex",
@@ -363,7 +366,7 @@ setError("submitting successfully");
               input={<OutlinedInput />}
               renderValue={(selected) => {
                 if (selected.length === 0) {
-                  return <em>Placeholder</em>;
+                  return <em>Select Travelers</em>;
                 }
                 return selected
                   .map((item) => `${item.name}: ${item.count}`)
@@ -438,7 +441,7 @@ setError("submitting successfully");
           }}
         >
           <TextField
-           label="Additional Comment"
+            label="Additional Comment"
             id="filled-hidden-label-normal"
             variant="filled"
             value={additionalComment}
@@ -471,7 +474,7 @@ setError("submitting successfully");
             Submit
           </Button>
         </Box>
-         {error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message">{error}</p>}
       </FormControl>
     </form>
   );

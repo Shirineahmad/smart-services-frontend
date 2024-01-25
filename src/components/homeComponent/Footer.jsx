@@ -38,7 +38,7 @@ const Footer = () => {
         alignItems: "center",
         py: 3,
         px: 2,
-        marginTop: "103px",
+       
       }}
     >
       <Container
