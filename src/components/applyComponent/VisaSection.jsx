@@ -4,20 +4,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { countries } from "../../countries";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import TextField from "@mui/material/TextField";
 import axios from "axios";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -26,23 +14,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import { useNavigate } from "react-router-dom";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
 
 
 const VisaSection = () => {
   const [error, setError] = React.useState(null);
   const [country, setCountry] = React.useState("");
-  const [visa, setVisa] = React.useState([]);
    const [showError, setShowError] = React.useState(false);
     const navigate = useNavigate();
   const handleLeaving = (event) => {
@@ -73,7 +49,7 @@ const VisaSection = () => {
       console.log("visa1", response.data);
 console.log("rsponse", responseInformation.data);
       if (response.data.success && responseInformation.data.success) {
-        setVisa(response.data.data);
+        
         console.log("visa2", response.data.data);
  console.log("responseInformation to be sent:", responseInformation.data.data);
         // Navigate to the "visa" page with the visa information
@@ -134,6 +110,7 @@ console.log("rsponse", responseInformation.data);
 
               return selected;
             }}
+            MenuProps
           >
             {countries.map((country) => (
               <MenuItem key={country} value={country}>
@@ -159,11 +136,8 @@ console.log("rsponse", responseInformation.data);
         >
           Search
         </Button>
-         {showError
-          && <Dialog
-            open={showError}
-            onClose={() => setShowError(false)}
-          >
+        {showError && (
+          <Dialog open={showError} onClose={() => setShowError(false)}>
             <DialogTitle>Error</DialogTitle>
             <DialogContent>
               <DialogContentText>{error}</DialogContentText>
@@ -173,7 +147,8 @@ console.log("rsponse", responseInformation.data);
                 Close
               </Button>
             </DialogActions>
-          </Dialog>}
+          </Dialog>
+        )}
       </FormControl>
     </form>
   );

@@ -14,7 +14,7 @@ import Fade from "@mui/material/Fade";
 import img1 from "../../images/home1.jpg";
 import img2 from "../../images/pexels-element-digital-1051075.jpg";
 import img3 from "../../images/home3.jpg";
-import img4 from "../../images/home4.jpg";
+import img4 from "../../images/services.jpg";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 

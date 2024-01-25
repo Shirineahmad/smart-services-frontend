@@ -1,12 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../src/pages/HomePage";
 import ApplyPage from "./pages/ApplyPage";
-import DashBoard from "./pages/Dashboard"
+import DashBoard from "./pages/Dashboard";
 import SignIn from "./pages/SignIn";
 import SignUP from "./pages/SignUp";
 import VisaPage from "./pages/VisaPage";
 import ContactUs from "./pages/ContactUsPage.jsx";
 import LanguageExam from "./pages/LanguageExam.jsx";
+import About from "./pages/AbouUsPgae.jsx";
 function App() {
   return (
     <Routes>
@@ -18,6 +19,7 @@ function App() {
       <Route path="/SignUp" element={<SignUP />} />
       <Route path="/ContactUs" element={<ContactUs />} />
       <Route path="/LanguageExam" element={<LanguageExam />} />
+      <Route path="/About" element={<About />} />
     </Routes>
   );
 }

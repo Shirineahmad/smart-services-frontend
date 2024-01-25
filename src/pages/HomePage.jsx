@@ -5,7 +5,7 @@ import SliderServices from "../components/homeComponent/SliderServices";
 import Footer from "../components/homeComponent/Footer";
 import SectionWeDo from "../components/homeComponent/SectionWeDo";
 import SectionWhyShiro from "../components/homeComponent/SectionWhyShiro";
-import SliderLogo from "../components/homeComponent/SliderLogo";
+
 const HomePage = () => {
   return (
     <div>
@@ -15,7 +15,6 @@ const HomePage = () => {
       <SliderServices />
       <SectionWeDo />
       <SectionWhyShiro />
-      <SliderLogo/>
       <Footer />
     </div>
   );

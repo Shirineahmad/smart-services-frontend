@@ -1,13 +1,15 @@
 import HeroSection from "../components/applyComponent/HeroSection";
 import Header from "../components/homeComponent/Header";
+import Footer from "../components/homeComponent/Footer"
 const ApplyPage = () => {
   return (
-    <div style={{
-      display:"flex" ,flexDirection:"column"}}>
+    <div>
       <Header />
       <HeroSection />
+      <Footer/>
+     
     </div>
-  )
-}
+  );
+};
 
-export default ApplyPage
+export default ApplyPage;

@@ -11,10 +11,9 @@ import { Flight } from "@mui/icons-material";
 import MovingIcon from "@mui/icons-material/Moving";
 import DescriptionIcon from "@mui/icons-material/Description";
 import FlightSection from "./FlightSection";
-import imageBack from "../../images/pexels-porapak-apichodilok-346885.jpg"
 import VisaSection from "./VisaSection";
-import InsuranceSection from "./InsuranceSection";
 import { useNavigate } from "react-router-dom";
+import flight from "../../images/flight.jpg";
 const AntTabs = styled(Tabs)({
   borderBottom: "1px solid #e8e8e8",
   "& .MuiTabs-indicator": {
@@ -69,7 +68,7 @@ const StyledTabs = styled((props) => (
 
 
 
-export default function CustomizedTabs() {
+export default function HeroSection() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const value = useSelector((state) => state.slider.value);
@@ -94,44 +93,54 @@ export default function CustomizedTabs() {
 
     fetchServices();
   }, [dispatch]);
- const handleIcon = (name) => {
-   switch (name) {
-     case "Flight":
-       return <Flight/>; // Replace with the actual icon for Flight
+  
+  const handleIcon = (name) => {
+    switch (name) {
+      case "Flight":
+        return <Flight />; // Replace with the actual icon for Flight
 
-     case "Language Exams":
-       return <DescriptionIcon/>; // Replace with the actual icon for Car
+      case "Language Exams":
+        return <DescriptionIcon />; // Replace with the actual icon for Car
 
-     case "Visa":
-       return <MovingIcon/>; // Replace with the actual icon for Train
+      case "Visa":
+        return <MovingIcon />; // Replace with the actual icon for Train
 
-     default:
-       return ""; // Replace with a default icon for other cases
-   }
- };
+      default:
+        return ""; // Replace with a default icon for other cases
+    }
+  };
 
- const handleChange = (event, newValue) => {
-   console.log("newValue", newValue);
-   console.log("event", event);
-   dispatch(setValue((prevValue, servicesListLength) => newValue));
- };
+  const handleChange = (event, newValue) => {
+    console.log("newValue", newValue);
+    console.log("event", event);
+    dispatch(setValue((prevValue, servicesListLength) => newValue));
+  };
   return (
+    
     <Box
       sx={{
-        position: "absolute",
-        top: "80px",
-        left: 0,
-        width: "100%",
-        backgroundImage: `url(${imageBack})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative",
       }}
     >
+      <img
+        src={flight}
+        alt="idk"
+        style={{
+          width: "100%",
+          height: "70vh",
+          objectFit: "cover",
+        }}
+      />
+
       <Box
         sx={{
           width: "100%",
           flexGrow: 0,
-          position: "relative",
+          position: "absolute",
           height: 500,
 
           display: "flex",
@@ -169,13 +178,11 @@ export default function CustomizedTabs() {
             sx={{ width: "100%", justifyContent: "center", display: "flex" }}
           >
             {value === 0 && <VisaSection />}
-            {value === 1 &&  navigate("/LanguageExam")}
+            {value === 1 && navigate("/LanguageExam")}
             {value === 2 && <FlightSection />}
-            {/* {value === 3 && <Link to="/LanguageExam" />} */}
           </StyledTabs>
         </Box>
       </Box>
     </Box>
-    // </Box>
   );
 }

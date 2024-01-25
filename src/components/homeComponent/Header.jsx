@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const pages = ["Services", "About Us"];
+const pages = ["Services"];
 const settings = ["Profile", "Logout"];
 
 function Header() {
@@ -214,9 +214,9 @@ function Header() {
                   {page}
                 </Button>
               ))}
-                <Link to="/ContactUs" style={{ textDecoration: "none" }}>
+              <Link to="/About" style={{ textDecoration: "none" }}>
                 <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
-                  Contact Us
+                  About Us
                 </Button>
               </Link>
               <Link to="/ContactUs" style={{ textDecoration: "none" }}>
@@ -322,6 +322,11 @@ function Header() {
                 {page}
               </Button>
             ))}
+            <Link to="/About" style={{ textDecoration: "none" }}>
+              <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
+                About Us
+              </Button>
+            </Link>
             <Link to="/ContactUs" style={{ textDecoration: "none" }}>
               <Button sx={{ my: 2, color: "#DF2E38", display: "block" }}>
                 Contact Us
@@ -371,23 +376,16 @@ function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map(
-                  (setting) => (
-                    // (setting === "Dashboard" && userRole === "admin") ||
-                    // setting !== "Dashboard" ? (
-                    <MenuItem
-                      key={setting}
-                      onClick={
-                        setting === "Logout"
-                          ? handleLogout
-                          : handleCloseUserMenu
-                      }
-                    >
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  )
-                  // ) : null
-                )}
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={
+                      setting === "Logout" ? handleLogout : handleCloseUserMenu
+                    }
+                  >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
               </Menu>
             </Box>
           )}

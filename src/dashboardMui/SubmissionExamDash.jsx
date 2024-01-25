@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 import Container from "@mui/material/Container";
-import { Grid, Paper } from "@mui/material";
+import { Grid } from "@mui/material";
 import {
   Table,
   TableBody,
@@ -10,34 +10,124 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
+  Button,
+  TextField,
 } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
-  const token = localStorage.getItem("token");
-console.log("token",token)
-   
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase";
+const token = localStorage.getItem("token");
+console.log("token", token);
+
 const SubmissionExamDash = () => {
   const [submissions, setSubmission] = React.useState([]);
   const [status, setStatus] = React.useState("");
-  const handleDownloadImages = (imageUrls, downloadFileName) => {
-    if (imageUrls && imageUrls.length > 0) {
-      const links = imageUrls.map((imageUrl, index) => ({
-        href: imageUrl,
-        download: `${downloadFileName}_${index + 1}.png`,
-      }));
+  const [searchName, setSearchName] = React.useState("");
+  const [resultSearch, setResultSearch] = React.useState([]);
+  const [showSearch, setShowSearch] = React.useState(false);
+// const downloadFiles = async (filePaths, fileName = "pdfs") => {
+//   const promises = filePaths.map(async (filePath) => {
+//     try {
+//       const storageRef = ref(storage, filePath);
+//       const downloadURL = await getDownloadURL(storageRef);
 
-      // Create links and append them to the document
-      links.forEach((linkInfo) => {
+//       const link = document.createElement("a");
+//       link.href = downloadURL;
+//       link.download = fileName;
+
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+
+//       return Promise.resolve();
+//     } catch (error) {
+//       console.error("Error downloading file:", error);
+//       return Promise.reject(error);
+//     }
+//   });
+
+//   try {
+//     await Promise.all(promises);
+//     console.log("All files downloaded successfully");
+//   } catch (error) {
+//     console.error("Error downloading files:", error);
+//   }
+// };
+
+  const downloadFiles = async (filePaths, fileName = "pdfs") => {
+    const promises = filePaths.map(async (filePath) => {
+      try {
+        const downloadURL = await getDownloadURL(ref(storage, filePath));
+
+        console.log("Download URL:", downloadURL); // Log the download URL
+
         const link = document.createElement("a");
-        link.href = linkInfo.href;
-        link.download = linkInfo.download;
+         link.target = "_blank";
+        link.href = downloadURL;
+        link.download = fileName;
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      });
-    } else {
-      console.error("Passport images not available for download.");
+
+        return Promise.resolve();
+      } catch (error) {
+        console.error("Error downloading file:", error);
+        return Promise.reject(error);
+      }
+    });
+
+    try {
+      await Promise.all(promises);
+      console.log("All files downloaded successfully");
+    } catch (error) {
+      console.error("Error downloading files:", error);
     }
+  };
+
+  // const handleDownloadImages = (imageUrls, downloadFileName) => {
+  //   if (imageUrls && imageUrls.length > 0) {
+  //     const links = imageUrls.map((imageUrl, index) => ({
+  //       href: imageUrl,
+  //       download: `${downloadFileName}_${index + 1}.png`,
+  //     }));
+
+  //     // Create links and append them to the document
+  //     links.forEach((linkInfo) => {
+  //       const link = document.createElement("a");
+  //       link.href = linkInfo.href;
+            // link.target = "_blank";
+  //       link.download = linkInfo.download;
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     });
+  //   } else {
+  //     console.error("Passport images not available for download.");
+  //   }
+  // };
+  const searchUser = (e) => {
+    e.preventDefault();
+    setShowSearch(true);
+
+    const result = submissions.filter((submission) => {
+      const userFirstName = (submission.userId.firstName || "").toLowerCase();
+      const userLastName = (submission.userId.lastName || "").toLowerCase();
+
+      const [searchFirstName, searchLastName] = searchName
+        .toLowerCase()
+        .split(" ");
+
+      return (
+        userFirstName.includes(searchFirstName) ||
+        userFirstName.includes(searchLastName) ||
+        userLastName.includes(searchFirstName) ||
+        userLastName.includes(searchLastName)
+      );
+    });
+
+    setResultSearch(result);
   };
   const handle = async (event, submissionId) => {
     const newStatus = event.target.value;
@@ -96,6 +186,35 @@ const SubmissionExamDash = () => {
   console.log("submission", submissions);
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4, ml: 0 }}>
+      <form onSubmit={searchUser}>
+        <div
+          className="flex justify-end pb-6 pt-1"
+          x-data="{ search: '' }"
+          onClick={() => setShowSearch(false)}
+        >
+          <TextField
+            label="Search for User"
+            variant="outlined"
+            size="small"
+            onChange={(e) => setSearchName(e.target.value.toLowerCase())}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!searchName}
+            style={{
+              marginLeft: "8px",
+              color: "white",
+              backgroundColor: "#DF2E38",
+              "&:hover": {
+                backgroundColor: "#5D9C59", // Change to the desired hover color
+              },
+            }}
+          >
+            Search
+          </Button>
+        </div>
+      </form>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Table size="small">
@@ -116,52 +235,111 @@ const SubmissionExamDash = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {submissions.map((submission) => (
-                <TableRow key={submission._id}>
-                  <TableCell>
-                    {submission.userId.firstName}
-                    {submission.userId.LastName}
-                  </TableCell>
-                  <TableCell>{submission.userId.phoneNumber}</TableCell>
-                  <TableCell>{submission.urgentNumber}</TableCell>
-                  <TableCell>{submission.userId.email}</TableCell>
-                  <TableCell>{submission.examId.language}</TableCell>
-                  <TableCell>{submission.examId.institute}</TableCell>
-                  <TableCell>{submission.examId.level}</TableCell>
-                  <TableCell>{submission.examId.description}</TableCell>
-                  <TableCell>{submission.additionalComment}</TableCell>
+              {showSearch
+                ? resultSearch.map((submission) => (
+                    <TableRow key={submission._id}>
+                      <TableCell>
+                        {submission.userId.firstName}
+                        {submission.userId.LastName}
+                      </TableCell>
+                      <TableCell>{submission.userId.phoneNumber}</TableCell>
+                      <TableCell>{submission.urgentNumber}</TableCell>
+                      <TableCell>{submission.userId.email}</TableCell>
+                      <TableCell>{submission.language}</TableCell>
+                      <TableCell>{submission.institute}</TableCell>
+                      <TableCell>{submission.level}</TableCell>
+                      <TableCell>{submission.description}</TableCell>
+                      <TableCell>{submission.additionalComment}</TableCell>
 
-                  {submission.passport && submission.passport.length > 0 && (
-                    <TableCell>
-                      <button
-                        onClick={() =>
-                          handleDownloadImages(submission.passport, "download")
+                      {submission.passport &&
+                        submission.passport.length > 0 && (
+                          <TableCell>
+                            <button
+                              onClick={() => downloadFiles(submission.passport)}
+                            >
+                              Download Files
+                            </button>
+                          </TableCell>
+                        )}
+                      <TableCell>
+                        {
+                          new Date(submission.createdAt)
+                            .toISOString()
+                            .split("T")[0]
                         }
-                      >
-                        Download Passport
-                      </button>
-                    </TableCell>
-                  )}
-                  <TableCell>
-                    {new Date(submission.createdAt).toISOString().split("T")[0]}
-                  </TableCell>
+                      </TableCell>
 
-                  <TableCell align="right">
-                    <Select
-                      displayEmpty
-                      value={status[submission._id] || submission.statusExam}
-                      onChange={(event) => handle(event, submission._id)}
-                      input={<OutlinedInput />}
-                    >
-                      <MenuItem value={submission.statusExam} selected>
-                        {submission.statusExam}
-                      </MenuItem>
-                      <MenuItem value="request">request</MenuItem>
-                      <MenuItem value="accept">accept</MenuItem>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-              ))}
+                      <TableCell align="right">
+                        <Select
+                          displayEmpty
+                          value={
+                            status[submission._id] || submission.statusExam
+                          }
+                          onChange={(event) => handle(event, submission._id)}
+                          input={<OutlinedInput />}
+                        >
+                          <MenuItem value={submission.statusExam} selected>
+                            {submission.statusExam}
+                          </MenuItem>
+                          <MenuItem value="request">request</MenuItem>
+                          <MenuItem value="accept">accept</MenuItem>
+                        </Select>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : submissions.map((submission) => (
+                    <TableRow key={submission._id}>
+                      <TableCell>
+                        {submission.userId.firstName}
+                        {submission.userId.LastName}
+                      </TableCell>
+                      <TableCell>{submission.userId.phoneNumber}</TableCell>
+                      <TableCell>{submission.urgentNumber}</TableCell>
+                      <TableCell>{submission.userId.email}</TableCell>
+                      <TableCell>{submission.language}</TableCell>
+                      <TableCell>{submission.institute}</TableCell>
+                      <TableCell>{submission.level}</TableCell>
+                      <TableCell>{submission.description}</TableCell>
+                      <TableCell>{submission.additionalComment}</TableCell>
+
+                      {submission.passport &&
+                        submission.passport.length > 0 && (
+                          <TableCell>
+                            <button
+                              onClick={() =>
+                                downloadFiles(submission.passport, "download")
+                              }
+                            >
+                              Download Passport
+                            </button>
+                          </TableCell>
+                        )}
+                      <TableCell>
+                        {
+                          new Date(submission.createdAt)
+                            .toISOString()
+                            .split("T")[0]
+                        }
+                      </TableCell>
+
+                      <TableCell align="right">
+                        <Select
+                          displayEmpty
+                          value={
+                            status[submission._id] || submission.statusExam
+                          }
+                          onChange={(event) => handle(event, submission._id)}
+                          input={<OutlinedInput />}
+                        >
+                          <MenuItem value={submission.statusExam} selected>
+                            {submission.statusExam}
+                          </MenuItem>
+                          <MenuItem value="request">request</MenuItem>
+                          <MenuItem value="accept">accept</MenuItem>
+                        </Select>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </Grid>
@@ -170,6 +348,4 @@ const SubmissionExamDash = () => {
   );
 };
 
-
-
-export default SubmissionExamDash
+export default SubmissionExamDash;

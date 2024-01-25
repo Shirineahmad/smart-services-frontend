@@ -33,16 +33,6 @@ const HeroLanguageExam = () => {
   const [message, setMessage] = React.useState("");
    const [additionalComment, setAdditionalComment] = React.useState("");
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
 
   useEffect(() => {
     const fetchExam = async () => {
@@ -162,7 +152,7 @@ const HeroLanguageExam = () => {
           },
         }
       );
-
+setMessage("submitting suucessfully")
       console.log("After submitting:", examResponse.data);
 
       // Reset form fields and state
@@ -171,8 +161,9 @@ const HeroLanguageExam = () => {
       setDescription("");
       setInstitute("");
       setUrgentNumber("");
-      setAditionalComment("");
+      setAditionalComment(" ");
       setImages("");
+      setMessage("")
     } catch (error) {
       console.error("Error creating order:", error.message);
       if (error.response) {
@@ -360,7 +351,7 @@ const HeroLanguageExam = () => {
               }}
             />
             <TextField
-             
+              label="Additional Comment"
               variant="filled"
               value={additionalComment}
               fullWidth
@@ -404,6 +395,7 @@ const HeroLanguageExam = () => {
               Submit
             </Button>
           </Box>
+          {message && <p className="error-message">{message}</p>}
         </Paper>
 
         {/* <Container maxWidth="lg" sx={{ mt: 4, mb: 4, ml: 0 }}>

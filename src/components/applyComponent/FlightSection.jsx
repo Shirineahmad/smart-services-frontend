@@ -14,15 +14,9 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
 import Button from "@mui/material/Button";
-
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-
-
-
-
 
 const userId = localStorage.getItem("userId");
  const token = localStorage.getItem('token');
@@ -40,12 +34,12 @@ const MenuProps = {
 const names = ["Adult", "Child", "Infant"];
 
 const FlightSection = () => {
-  const [way, setWay] = React.useState("Round");
+  const [way, setWay] = React.useState( "");
   const [leavingFrom, setLeavingFrom] = React.useState("");
   const [arriving, setArriving] = React.useState("");
-    const [leavingDate, setLeavingDate] = React.useState(null);
-    const [arrivingDate, setArrivingDate] = React.useState(null);
-  const [classFlight, setClassFlight] = React.useState("Economy");
+    const [leavingDate, setLeavingDate] = React.useState("");
+    const [arrivingDate, setArrivingDate] = React.useState("");
+  const [classFlight, setClassFlight] = React.useState("");
   const[images,setImages]=React.useState([])
  const [travelers, setTravelers] = React.useState({
    Adult: 0,
@@ -53,7 +47,7 @@ const FlightSection = () => {
    Infant: 0,
  });
   const [additionalComment, setAdditionalComment] = React.useState("");
-  const [error, setError] = React.useState(null);
+  const [error, setError] = React.useState("");
 
   const handleLeaving = (event) => {
     setLeavingFrom(event.target.value);
@@ -88,7 +82,7 @@ const handleChangeChip = (event) => {
   const handleFileUpload = (e) => {
     const newImages = e.target.files[0];
 
-    if (newImages && images.length < 4) {
+    if (newImages ) {
       setImages((prevImages) => [...prevImages, newImages]);
     }
   };
@@ -119,6 +113,10 @@ const handleChangeChip = (event) => {
       setError("travelers is required.");
       return false;
     }
+     if (!images) {
+      setError("file is required.");
+      return false;
+    }
 
     return true;
   };
@@ -141,8 +139,8 @@ console.log("images",images)
     formData.append("classFlight", classFlight);
     formData.append("additionalComment", additionalComment);
     formData.append("leavingDate", leavingDate);
-    formData.append("arrivingDate", arrivingDate);
-
+    formData.append("arrivingDate", arrivingDate);;
+   formData.append("statusFlight", "pending");
     // Append each image in the images array to the formData under the 'passport' key
     images.forEach((image) => {
       formData.append(`passport`, image);
@@ -162,7 +160,7 @@ console.log("images",images)
           },
         }
       );
-
+setError("submitting successfully");
       console.log("After submitting:", flightResponse.data);
 
       // Reset form fields and state
@@ -170,7 +168,7 @@ console.log("images",images)
       setLeavingFrom("");
       setArriving("");
       setClassFlight("");
-      setLeavingDate("");
+      setLeavingDate("")
       setArrivingDate("");
       setTravelers({
         Adult: 0,
@@ -178,7 +176,8 @@ console.log("images",images)
         Infant: 0,
       });
       setAdditionalComment("");
-      setImages(null);
+      setImages([]);
+      setError("")
     } catch (error) {
      console.error("Error creating order:", error.message);
      if (error.response) {
@@ -319,7 +318,7 @@ console.log("images",images)
                 }}
               >
                 <DatePicker
-                  label="StarDate"
+                  label="StartDate"
                   StartDate="startDate"
                   onChange={handleLeavingDateChange}
                 />
@@ -339,7 +338,7 @@ console.log("images",images)
             input={<OutlinedInput />}
             renderValue={(selected) => {
               if (selected.length === 0) {
-                return <em>Economy</em>;
+                return <em>Select class</em>;
               }
 
               return selected;
@@ -439,7 +438,7 @@ console.log("images",images)
           }}
         >
           <TextField
-            hiddenLabel
+           label="Additional Comment"
             id="filled-hidden-label-normal"
             variant="filled"
             value={additionalComment}
@@ -472,6 +471,7 @@ console.log("images",images)
             Submit
           </Button>
         </Box>
+         {error && <p className="error-message">{error}</p>}
       </FormControl>
     </form>
   );

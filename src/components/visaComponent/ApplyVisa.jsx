@@ -23,7 +23,7 @@ const ApplyVisa = ({ visaData }) => {
   const names = ["Adult", "Child", "Infant"];
   const [error, setError] = React.useState(null);
   const [visaId, setVisaId] = React.useState("")
-    const [status, setStatus] = React.useState("pending");
+    
   const handleChangeChip = (event) => {
     const selectedTravelers = event.target.value;
 
@@ -37,13 +37,10 @@ const ApplyVisa = ({ visaData }) => {
   };
 
   const handleFileUpload = (e) => {
-    const newImages = e.target.files[0];
+    const newFile = e.target.files[0];
 
-    if (newImages) {
-      setImages((prevImages) => [
-        ...prevImages,
-        { name: e.target.name, files: newImages },
-      ]);
+    if (newFile) {
+      setImages((prevImages) => [...prevImages,newFile]);
     }
   };
 
@@ -65,12 +62,7 @@ const ApplyVisa = ({ visaData }) => {
         console.log("travelers", travelers);
        return false;
      }
-     if (!status) {
-         console.log("status", status);
-        setError("status is required.");
-        return false;
-      }
-
+    
      return true;
   };
     const handleVisaType = (event) => {
@@ -87,20 +79,20 @@ const ApplyVisa = ({ visaData }) => {
     }
 console.log("userId", userId);
 console.log("visaId", visaId);
-console.log("statusVisa", status);
+
 console.log("images", images);
 console.log("travelers", travelers);
 
-    console.log("status", status);
+    
     try {
       const formData = new FormData();
       formData.append("userId", userId);
       formData.append("visaId", visaId);
-     formData.append("statusVisa", status);
+     formData.append("statusVisa", "pending");
 
-      // Append each file to the formData under the 'documents' key
-      images.forEach((image, index) => {
-        formData.append(`document_${index}`, image.files);
+    
+      images.forEach((image) => {
+        formData.append(`documents`, image);
       });
 
       // Append the travelers object as a JSON string
@@ -123,7 +115,6 @@ console.log("travelers", travelers);
 
       // Reset form fields and state
       setVisaId("");
-      setStatus("");
       setTravelers({
         Adult: 0,
         Child: 0,
@@ -149,7 +140,7 @@ console.log("travelers", travelers);
 
   return (
     <div>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4, ml: 0 }}>
+      <Container maxWidth="lg" sx={{ mb: 4, ml: 0 }}>
         <Grid container spacing={3} sx={{ width: "100%" }}>
           {/* Chart */}
           <Grid item xs={12} md={8} lg={9}>
@@ -159,8 +150,8 @@ console.log("travelers", travelers);
                 display: "flex",
                 flexDirection: "column",
                 height: "100%",
-                backgroundColor: "#DF2E38",
-                width: "100%",
+                backgroundColor: "white",
+                width: "50vh",
               }}
             >
               <form onSubmit={handleConfirm}>
@@ -173,9 +164,9 @@ console.log("travelers", travelers);
                     flexDirection: "column",
                     rowGap: "10px",
                   }}
-                 
                 >
-                  <Typography variant="h6" sx={{ color: "white" }}>
+                  
+                  <Typography variant="h6" sx={{ color: "#DF2E38" }}>
                     {" "}
                     Apply Now
                   </Typography>
@@ -200,10 +191,6 @@ console.log("travelers", travelers);
                         </MenuItem>
                       ))}
                   </Select>
-
-                  {/* selec */}
-
-                  {/* select 3 */}
                   <Box>
                     <Select
                       multiple
@@ -279,190 +266,13 @@ console.log("travelers", travelers);
                         </MenuItem>
                       ))}
                     </Select>
+                    <Typography>Please apply all documents here</Typography>
                     <input
                       type="file"
                       accept="application/pdf"
                       onChange={handleFileUpload}
-                      name="PHOTOGRAPH"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="ORIGINAL PASSPORT"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="PHOTOGRAPH"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="PHOTOGRAPH"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="TRAVEL INSURANCE"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="LETTER FROM PARENTS"
-                    />
-                    <input
-                      
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="EMPLOYMENT LETTER"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="BUSINESS REGISTRATION CERTIFICATE"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="INCOME TAX RETURNS - 3 YEARS"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="BONAFIDE CERTIFICATE FROM SCHOOL OR UNIVERSITY - STUDENT"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="PERSONAL BANK STATEMENT"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="BUSINESS REGISTRATION CERTIFICATE"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="SALARY SLIPS"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="MARRIAGE CERTIFICATE"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="COVERING LETTER"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="NOC LETTER FROM EMPLOYER"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="RATION CARD COPY"
-                    />
-
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="FORMAL OBLIGATION LETTER"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="RESIDENCE PERMIT COPY - SPONSOR"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="RENTAL AGREEMENT / LAND REGISTRY - SPONSOR"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="PASSPORT COPY ALL DATA PAGES"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="APPLICATION FORM"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="DECLARATION FORM 1"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="DECLARATION FORM 2"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="BIRTH CERTIFICATE OF CHILDREN"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="BANK STATEMENT - SPONSOR"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="SALARY SLIPS - SPONSOR"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="CONFIRMED ONWARD / RETURN FLIGHT TICKET"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="LEAVE SANCTION LETTER FROM EMPLOYER"
-                    />
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileUpload}
-                      name="NO OBJECTION LETTER FROM SCHOOL / UNIVERSITY (FOR STUDENTS)German National"
                     />
                   </Box>
-
                   <Box
                     sx={{
                       display: "flex",

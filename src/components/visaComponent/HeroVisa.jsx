@@ -1,44 +1,72 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
-import visaImage from "../../images/visadetails_collage.jpg";
+import { Box, Typography,  } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { setServicesList } from "../../store/sliderSlice";
+import { useEffect } from "react";
+import axios from "axios";
+const HeroVisa = ({ countryName }) => {
+    const servicesList = useSelector((state) => state.slider.servicesList);
+    const dispatch = useDispatch();
+      
+ useEffect(() => {
+   const fetchServices = async () => {
+     try {
+       const response = await axios.get(
+         "http://127.0.01:8000//services/getByName/Visa"
+       );
+       console.log("response.data", response.data);
+       if (response.data.success) {
+         dispatch(setServicesList(response.data.data));
+       } else {
+         console.error("Error fetching products:", response.data.message);
+       }
+     } catch (error) {
+       console.error("Error fetching products:", error.message);
+     }
+   };
 
-const HeroVisa = ({countryName}) => {
+   fetchServices();
+ }, [dispatch]);
   return (
     <div>
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "38vh",
-          backgroundImage: `url(${visaImage})`,
-          backgroundSize: "contain", // Set to cover to maintain aspect ratio
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "top",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          top:"80px"
-        }}
-      >
-        <Typography
-          variant="h4"
-          sx={{
-            fontFamily: "popins",
-            color: "#FFFFFF", // Change text color to contrast with the background
-            fontWeight: "bold",
-          }}
-        >
-        {countryName} Visa
-        </Typography>
-      </div>
+      {servicesList &&
+        servicesList.images &&
+        servicesList.images.length > 0 && (
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "38vh",
+              backgroundImage: `url(${servicesList.images[2]})`,
+              backgroundSize: "contain", // Set to cover to maintain aspect ratio
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "top",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              top: "80px",
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                fontFamily: "popins",
+                color: "#FFFFFF", // Change text color to contrast with the background
+                fontWeight: "bold",
+              }}
+            >
+              {countryName} Visa
+            </Typography>
+          </div>
+        )}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-         
+
           backgroundColor: "#DDF7E3",
         }}
       >

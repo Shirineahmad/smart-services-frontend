@@ -8,15 +8,12 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
+import IconButton from "@mui/material/IconButton"
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import MovingIcon from "@mui/icons-material/Moving";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import DescriptionIcon from "@mui/icons-material/Description";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -26,28 +23,8 @@ import SubmissionFlight from "../dashboardMui/SubmissionFlight";
 import SubmissionVisa from "../dashboardMui/SubmissionVisa";
 import UserData from "../dashboardMui/UserData";
 import FlightIcon from "@mui/icons-material/Flight";
-import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemIcon from "@mui/material/ListItemIcon";
 import LogoutIcon from "@mui/icons-material/Logout";
-
-
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -108,7 +85,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography >{children}</Typography>
         </Box>
       )}
     </div>
@@ -138,10 +115,10 @@ export default function Dashboard() {
     // Navigate to the default route when the component mounts
     navigate("/submissionExamDash");
   }, []); // Empty dependency array to run the effect only once
- const handleLogout = () => {
+  const handleLogout = () => {
     // Perform logout actions, e.g., clear local storage, close the menu, and navigate to the SignIn page
     localStorage.clear();
-    
+
     // Assuming you have a 'navigate' function from a routing library (like react-router-dom)
     // import { navigate } from 'react-router-dom';
     navigate("/");
@@ -175,12 +152,13 @@ export default function Dashboard() {
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: "24px", // keep right padding when drawer closed
+              pr: "24px",
+              backgroundColor: "#DF2E38", // keep right padding when drawer closed
             }}
           >
             <IconButton
               edge="start"
-              color="inherit"
+              color="#DF2E38"
               aria-label="open drawer"
               onClick={toggleDrawer}
               sx={{
@@ -188,7 +166,7 @@ export default function Dashboard() {
                 ...(open && { display: "none" }),
               }}
             >
-              <MenuIcon />
+              <MenuIcon sx={{ color: "white" }} />
             </IconButton>
             <Typography
               component="h1"
@@ -201,7 +179,6 @@ export default function Dashboard() {
             </Typography>
             <IconButton color="inherit" onClick={handleLogout}>
               <LogoutIcon />
-              
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -231,6 +208,7 @@ export default function Dashboard() {
                 justifyContent: "flex-start",
                 alignItems: "center",
                 borderRight: 1,
+
                 borderColor: "divider",
                 height: "100%",
               }}
@@ -239,7 +217,7 @@ export default function Dashboard() {
                 label={open ? "submissionExam" : null}
                 icon={
                   <ListItemIcon>
-                    <FlightIcon />
+                    <DescriptionIcon sx={{ color: "#DF2E38" }} />
                   </ListItemIcon>
                 }
                 {...a11yProps(0)}
@@ -248,13 +226,18 @@ export default function Dashboard() {
                   flexDirection: "row",
                   justifyContent: "flex-start",
                   alignItems: "center",
+                  color: "#DF2E38",
+                  "& .Mui-selected": {
+                    color: "#DF2E38",
+                    borderColor: "#DF2E38",
+                  },
                 }} // Add flex styling
               />
               <Tab
                 label={open ? "submissionFlight" : null}
                 icon={
                   <ListItemIcon>
-                    <FlightIcon />
+                    <FlightIcon sx={{ color: "#DF2E38" }} />
                   </ListItemIcon>
                 }
                 {...a11yProps(1)}
@@ -263,28 +246,39 @@ export default function Dashboard() {
                   flexDirection: "row",
                   justifyContent: "flex-start",
                   alignItems: "center",
+                  color: "#DF2E38",
+                  "& .Mui-selected": {
+                    color: "#DF2E38",
+                    borderColor: "#DF2E38",
+                  },
                 }} // Add flex styling
               />
               <Tab
-                label={open ? "submissionVisa" : null}
-                icon={
-                  <ListItemIcon>
-                    <FlightIcon />
-                  </ListItemIcon>
-                }
-                {...a11yProps(2)}
-                sx={{
+                  style={{
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "flex-start",
                   alignItems: "center",
-                }} // Add flex styling
+                  color: "#DF2E38",
+                  "& .Mui-selected": {
+                    color: "#DF2E38",
+                    borderColor: "#DF2E38",
+                  },
+                }}
+                label={open ? "submissionVisa" : null}
+                icon={
+                  <ListItemIcon>
+                    <MovingIcon sx={{ color: "#DF2E38" }} />
+                  </ListItemIcon>
+                }
+                {...a11yProps(2)}
+               // Add flex styling
               />
               <Tab
                 label={open ? "userData" : null}
                 icon={
                   <ListItemIcon>
-                    <FlightIcon />
+                    <PeopleAltIcon sx={{ color: "#DF2E38" }} />
                   </ListItemIcon>
                 }
                 {...a11yProps(3)}
@@ -293,6 +287,11 @@ export default function Dashboard() {
                   flexDirection: "row",
                   justifyContent: "flex-start",
                   alignItems: "center",
+                  color: "#DF2E38",
+                  "& .Mui-selected": {
+                    color: "#DF2E38",
+                    borderColor: "#DF2E38",
+                  },
                 }} // Add flex styling
               />
             </Tabs>
@@ -315,7 +314,17 @@ export default function Dashboard() {
             <Route
               path="/submissionExamDash"
               element={
-                <TabPanel value={value} index={0}>
+                <TabPanel
+                  value={value}
+                  index={0}
+                  sx={{
+                    color: "#DF2E38",
+                    "& .Mui-selected": {
+                      color: "#DF2E38",
+                      borderColor: "#DF2E38",
+                    },
+                  }}
+                >
                   <SubmissionExamDash />
                 </TabPanel>
               }
@@ -323,7 +332,14 @@ export default function Dashboard() {
             <Route
               path="/submissionFlight"
               element={
-                <TabPanel value={value} index={1}>
+                <TabPanel
+                  value={value}
+                  index={1}
+                  sx={{
+                    color: "#DF2E38",
+                    borderColor: "#DF2E38",
+                  }}
+                >
                   <SubmissionFlight />
                 </TabPanel>
               }
@@ -331,7 +347,7 @@ export default function Dashboard() {
             <Route
               path="/submissionVisa"
               element={
-                <TabPanel value={value} index={2}>
+                <TabPanel value={value} index={2} sx={{ color: "#DF2E38" }}>
                   <SubmissionVisa />
                 </TabPanel>
               }
@@ -339,7 +355,7 @@ export default function Dashboard() {
             <Route
               path="/userData"
               element={
-                <TabPanel value={value} index={3}>
+                <TabPanel value={value} index={3} sx={{ color: "#DF2E38" }}>
                   <UserData />
                 </TabPanel>
               }

@@ -35,16 +35,7 @@ const ContactUsPage = () => {
       name: e.target.value,
     });
   };
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+
    const handleInputNumber = (e) => {
      setFormData({
        ...formData,
@@ -135,7 +126,8 @@ const handleInputEmail = (e) => {
           display: "flex",
           flexDirection: "row",
           flexWrap: "wrap", // Allow items to wrap onto the next line
-          margin: "20px",
+          marginTop: "20px",
+          marginBottom: "20px",
         }}
       >
         <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -144,6 +136,7 @@ const handleInputEmail = (e) => {
               boxShadow: "3",
               height: "70vh",
               width: "100vh",
+             marginLeft:"50px",
               backgroundColor: (theme) =>
                 theme.palette.mode === "dark" ? "#1A2027" : "white",
             }}
@@ -296,7 +289,8 @@ const handleInputEmail = (e) => {
           <Paper
             sx={{
               height: "50vh",
-              width: "100vh",
+              width: "60vh",
+             marginLeft:"150px",
               backgroundColor: (theme) =>
                 theme.palette.mode === "dark" ? "#1A2027" : "white",
               boxShadow: "3",
