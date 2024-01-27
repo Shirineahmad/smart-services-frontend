@@ -2,7 +2,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
+import {Box,Button} from "@mui/material";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setValue, setServicesList } from "../../store/sliderSlice";
@@ -12,8 +12,8 @@ import MovingIcon from "@mui/icons-material/Moving";
 import DescriptionIcon from "@mui/icons-material/Description";
 import FlightSection from "./FlightSection";
 import VisaSection from "./VisaSection";
-import { useNavigate } from "react-router-dom";
 import flight from "../../images/flight.jpg";
+import { Link } from "react-router-dom";
 const AntTabs = styled(Tabs)({
   borderBottom: "1px solid #e8e8e8",
   "& .MuiTabs-indicator": {
@@ -66,7 +66,7 @@ const StyledTabs = styled((props) => (
 
 export default function HeroSection() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  
   const value = useSelector((state) => state.slider.value);
   const servicesList = useSelector((state) => state.slider.servicesList);
 
@@ -173,7 +173,26 @@ export default function HeroSection() {
             sx={{ width: "100%", justifyContent: "center", display: "flex" }}
           >
             {value === 0 && <VisaSection />}
-            {value === 1 && navigate("/LanguageExam")}
+            {value === 1 && (
+              <Link to="/LanguageExam">
+                <Button
+                
+                  sx={{
+                    width: "128px",
+                    height: "40px",
+                    borderRaduis: "4px",
+                    color: "white",
+                    borderColor: "#DF2E38",
+                    backgroundColor: "#DF2E38",
+                    "&:hover": {
+                      backgroundColor: "#5D9C59", // Change to the desired hover color
+                    },
+                  }}
+                >
+                 Go to Choose 
+                </Button>
+              </Link>
+            )}
             {value === 2 && <FlightSection />}
           </StyledTabs>
         </Box>

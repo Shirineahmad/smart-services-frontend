@@ -30,14 +30,14 @@ const HeroVisa = ({ countryName }) => {
   return (
     <div>
       {servicesList &&
-        servicesList.images &&
-        servicesList.images.length > 0 && (
+        servicesList[0].images &&
+        servicesList[0].images.length > 0 && (
           <div
             style={{
               position: "relative",
               width: "100%",
               height: "38vh",
-              backgroundImage: `url(${servicesList.images[2]})`,
+              backgroundImage: `url(${servicesList[0].images[2]})`,
               backgroundSize: "contain", // Set to cover to maintain aspect ratio
               backgroundRepeat: "no-repeat",
               backgroundPosition: "top",

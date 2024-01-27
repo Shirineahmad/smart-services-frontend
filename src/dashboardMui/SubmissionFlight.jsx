@@ -13,16 +13,20 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import Alert from "@mui/material/Alert";
+
 import { useEffect } from "react";
 import axios from "axios";
-const token = localStorage.getItem("token");
+
 
 const SubmissionFlight = () => {
   const [submissions, setSubmission] = React.useState([]);
   const [status, setStatus] = React.useState("");
   const [resultSearch, setResultSearch] = React.useState([]);
   const [showSearch, setShowSearch] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
   const [searchName, setSearchName] = React.useState("");
+  const token = localStorage.getItem("token");
   const handleDownloadImages = (pdfUrls, downloadFileName) => {
     if (pdfUrls && pdfUrls.length > 0) {
       const links = pdfUrls.map((pdfUrl, index) => ({
@@ -68,11 +72,13 @@ const SubmissionFlight = () => {
   const handle = async (event, submissionId) => {
     const newStatus = event.target.value;
 
-    // Update the status in the local state
-    setStatus((prevStatus) => ({
-      ...prevStatus,
-      [submissionId]: newStatus,
-    }));
+    // Update the status in the local state immutably
+    setStatus((prevStatus) => {
+      // Find the submission with the matching ID and update its status
+      const updatedStatus = { ...prevStatus };
+      updatedStatus[submissionId] = newStatus;
+      return updatedStatus;
+    });
 
     try {
       const response = await axios.put(
@@ -85,6 +91,12 @@ const SubmissionFlight = () => {
           },
         }
       );
+  if (response) {
+    setAlert(true);
+    setTimeout(() => {
+      setAlert(false);
+    }, 5000); // Hide alert after 5 seconds
+      }
       console.log("Response after update request:", response);
       console.log("Order updated successfully");
     } catch (error) {
@@ -150,7 +162,9 @@ const SubmissionFlight = () => {
             Search
           </Button>
         </div>
-      </form>
+        {alert && <Alert severity="success">Updated Successfully</Alert>}
+      </form>{" "}
+      {alert && <Alert severity="success">This is a success Alert.</Alert>}{" "}
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Table size="small">
@@ -240,11 +254,51 @@ const SubmissionFlight = () => {
                           onChange={(event) => handle(event, submission._id)}
                           input={<OutlinedInput />}
                         >
-                          <MenuItem value={submission.statusFlight} selected>
-                            {submission.statusFlight}
-                          </MenuItem>
-                          <MenuItem value="request">request</MenuItem>
-                          <MenuItem value="accept">accept</MenuItem>
+                          {submission.statusFlight === "pending" && [
+                            <MenuItem
+                              key="pending"
+                              value={submission.statusFlight}
+                              selected
+                            >
+                              {submission.statusFlight}
+                            </MenuItem>,
+                            <MenuItem key="request" value="request">
+                              Request
+                            </MenuItem>,
+                            <MenuItem key="accept" value="accept">
+                              Accept
+                            </MenuItem>,
+                          ]}
+                          {submission.statusFlight === "request" && [
+                            <MenuItem key="pending" value="pending">
+                              Pending
+                            </MenuItem>,
+                            <MenuItem
+                              key="request"
+                              value={submission.statusFlight}
+                              selected
+                            >
+                              {submission.statusFlight}
+                            </MenuItem>,
+                            <MenuItem key="accept" value="accept">
+                              Accept
+                            </MenuItem>,
+                          ]}
+                          {submission.statusFlight === "accept" && [
+                            <MenuItem key="pending" value="pending">
+                              Pending
+                            </MenuItem>,
+                            <MenuItem key="request" value="request">
+                              Request
+                            </MenuItem>,
+                            <MenuItem
+                              key="accept"
+                              value={submission.statusFlight}
+                              selected
+                            >
+                              {submission.statusFlight}
+                            </MenuItem>,
+                          ]}{" "}
                         </Select>
                       </TableCell>
                     </TableRow>
@@ -317,11 +371,43 @@ const SubmissionFlight = () => {
                           onChange={(event) => handle(event, submission._id)}
                           input={<OutlinedInput />}
                         >
-                          <MenuItem value={submission.statusFlight} selected>
-                            {submission.statusFlight}
-                          </MenuItem>
-                          <MenuItem value="request">request</MenuItem>
-                          <MenuItem value="accept">accept</MenuItem>
+                          {submission.statusFlight === "pending" && [
+                            <MenuItem
+                              key="pending"
+                              value={submission.statusFlight}
+                              selected
+                            >
+                              {submission.statusFlight}
+                            </MenuItem>,
+                            <MenuItem key="request" value="request">
+                              Request
+                            </MenuItem>,
+                            <MenuItem key="accept" value="accept">
+                              Accept
+                            </MenuItem>,
+                          ]}
+                          {submission.statusFlight === "request" && [
+                            <MenuItem key="pending" value="pending">
+                              Pending
+                            </MenuItem>,
+                            <MenuItem key="request" value="request" selected>
+                              {submission.statusFlight}
+                            </MenuItem>,
+                            <MenuItem key="accept" value="accept">
+                              Accept
+                            </MenuItem>,
+                          ]}
+                          {submission.statusFlight === "accept" && [
+                            <MenuItem key="pending" value="pending">
+                              Pending
+                            </MenuItem>,
+                            <MenuItem key="request" value="request">
+                              Request
+                            </MenuItem>,
+                            <MenuItem key="accept" value="accept" selected>
+                              {submission.statusFlight}
+                            </MenuItem>,
+                          ]}
                         </Select>
                       </TableCell>
                     </TableRow>

@@ -268,9 +268,12 @@ export default function SignUp() {
             open={showConfirmEmail}
             onClose={() => setShowConfirmEmail(false)}
           >
-            <DialogTitle>Error</DialogTitle>
+            <DialogTitle>Sign Up Succesfully</DialogTitle>
             <DialogContent>
-              <DialogContentText>{error}</DialogContentText>
+              <DialogContentText>
+                Should be confirm the email Before Sign In
+              </DialogContentText>
+            
             </DialogContent>
             <DialogActions>
               <Button

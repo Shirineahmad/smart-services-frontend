@@ -17,9 +17,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
 
-const userId = localStorage.getItem("userId");
-const token = localStorage.getItem("token");
+
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -41,6 +42,7 @@ const FlightSection = () => {
   const [arrivingDate, setArrivingDate] = React.useState("");
   const [classFlight, setClassFlight] = React.useState("");
   const [images, setImages] = React.useState([]);
+  const [alert, setAlert] = React.useState(false);
   const [travelers, setTravelers] = React.useState({
     Adult: 0,
     Child: 0,
@@ -50,25 +52,31 @@ const FlightSection = () => {
   const [error, setError] = React.useState("");
 
   const handleLeaving = (event) => {
+    setError("")
     setLeavingFrom(event.target.value);
   };
 
   const handleArriving = (event) => {
+    setError("");
     setArriving(event.target.value);
   };
   const handleClass = (event) => {
+    setError("");
     setClassFlight(event.target.value);
   };
   const handleLeavingDateChange = (date) => {
     // Handle changes in leavingDate
+    setError("");
     setLeavingDate(date);
   };
 
   const handleArrivingDateChange = (date) => {
     // Handle changes in arrivingDate
+    setError("");
     setArrivingDate(date);
   };
   const handleChangeChip = (event) => {
+    setError("");
     const selectedTravelers = event.target.value;
 
     // Update the state with the selected travelers
@@ -81,6 +89,7 @@ const FlightSection = () => {
   };
 
   const handleFileUpload = (e) => {
+    setError("");
     const newImages = e.target.files[0];
 
     if (newImages) {
@@ -89,38 +98,41 @@ const FlightSection = () => {
   };
 
   const validateInput = () => {
-    if (!way) {
-      setError("Choose way is required.");
-      return false;
-    }
-    if (!leavingFrom) {
-      setError("leavingFrom is required.");
-      return false;
-    }
+    if (error === "") {
+      if (!way) {
+        setError("Choose way is required.");
+        return false;
+      }
+      if (!leavingFrom) {
+        setError("leavingFrom is required.");
+        return false;
+      }
 
-    if (!arriving) {
-      setError("arriving is required.");
-      return false;
+      if (!arriving) {
+        setError("arriving is required.");
+        return false;
+      }
+      if (!classFlight) {
+        setError("classFlight is required.");
+        return false;
+      }
+      if (!travelers) {
+        setError("travelers is required.");
+        return false;
+      }
+      if (images.length === 0) {
+        setError("file is required.");
+        return false;
+      }
     }
-    if (!classFlight) {
-      setError("classFlight is required.");
-      return false;
-    }
-    if (!travelers) {
-      setError("travelers is required.");
-      return false;
-    }
-    if (!images) {
-      setError("file is required.");
-      return false;
-    }
-
     return true;
   };
-  React.useEffect(() => {
-    console.log("Updated travelers:", travelers);
-  }, [travelers]);
+  // React.useEffect(() => {
+  //   console.log("Updated travelers:", travelers);
+  // }, [travelers]);
 
+const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
   const handleConfirm = async (e) => {
     e.preventDefault();
     if (!validateInput()) {
@@ -158,8 +170,14 @@ const FlightSection = () => {
           },
         }
       );
-      setError("submitting successfully");
-      console.log("After submitting:", flightResponse.data);
+       if (flightResponse) {
+         setAlert(true);
+         setTimeout(() => {
+           setAlert(false);
+         }, 5000); // Hide alert after 5 seconds
+       }
+       console.log("After submitting:", flightResponse.data);
+
 
       // Reset form fields and state
       setWay("");
@@ -196,6 +214,7 @@ const FlightSection = () => {
 
   return (
     <form onSubmit={handleConfirm}>
+      {alert && <Alert severity="success">This is a success Alert.</Alert>}
       <FormControl
         sx={{
           m: 1,
