@@ -50,9 +50,9 @@ const SubmissionVisa = () => {
     e.preventDefault();
     setShowSearch(true);
 
-    const result = submissions.filter((submission) => {
-      const userFirstName = (submission.userId.firstName || "").toLowerCase();
-      const userLastName = (submission.userId.lastName || "").toLowerCase();
+    const result =   submissions.filter((submission) => {
+      const userFirstName = (submission.userId?.firstName || "").toLowerCase();
+      const userLastName = (submission.userId?.lastName || "").toLowerCase();
 
       const [searchFirstName, searchLastName] = searchName
         .toLowerCase()
@@ -182,10 +182,10 @@ const SubmissionVisa = () => {
                 ? resultSearch.map((submission) => (
                     <TableRow key={submission._id}>
                       <TableCell>
-                        {submission.userId.firstName}
-                        {submission.userId.LastName}
+                        {submission.userId?.firstName}
+                        {submission.userId?.LastName}
                       </TableCell>
-                      <TableCell>{submission.userId.phoneNumber}</TableCell>
+                      <TableCell>{submission.userId?.phoneNumber}</TableCell>
                       <TableCell>{submission.visaId.country}</TableCell>
                       <TableCell>{submission.visaId.title}</TableCell>
                       <TableCell>
@@ -278,10 +278,10 @@ const SubmissionVisa = () => {
                 : submissions.map((submission) => (
                     <TableRow key={submission._id}>
                       <TableCell>
-                        {submission.userId.firstName}
-                        {submission.userId.LastName}
+                        {submission.userId?.firstName}
+                        {submission.userId?.LastName}
                       </TableCell>
-                      <TableCell>{submission.userId.phoneNumber}</TableCell>
+                      <TableCell>{submission.userId?.phoneNumber}</TableCell>
                       <TableCell>{submission.visaId.country}</TableCell>
                       <TableCell>{submission.visaId.title}</TableCell>
                       <TableCell>

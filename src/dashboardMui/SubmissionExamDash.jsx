@@ -232,7 +232,7 @@ const SubmissionExamDash = () => {
         </div>
         {alert && <Alert severity="success">Updated Successfully</Alert>}
       </form>
-      {alert && <Alert severity="success">This is a success Alert.</Alert>}
+     
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Table size="small">
