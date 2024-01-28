@@ -179,7 +179,7 @@ const SubmissionVisa = () => {
             </TableHead>
             <TableBody>
               {showSearch
-                ? resultSearch.map((submission) => (
+                ?resultSearch && resultSearch.map((submission) => (
                     <TableRow key={submission._id}>
                       <TableCell>
                         {submission.userId?.firstName}
@@ -275,15 +275,15 @@ const SubmissionVisa = () => {
                       </TableCell>
                     </TableRow>
                   ))
-                : submissions.map((submission) => (
-                    <TableRow key={submission._id}>
+                :submissions&& submissions.map((submission) => (
+                    <TableRow key={ submission._id}>
                       <TableCell>
                         {submission.userId?.firstName}
                         {submission.userId?.LastName}
                       </TableCell>
                       <TableCell>{submission.userId?.phoneNumber}</TableCell>
-                      <TableCell>{submission.visaId.country}</TableCell>
-                      <TableCell>{submission.visaId.title}</TableCell>
+                      <TableCell>{submission.visaId?.country}</TableCell>
+                      <TableCell>{submission.visaId?.title}</TableCell>
                       <TableCell>
                         {
                           new Date(submission.createdAt)

@@ -52,8 +52,8 @@ const SubmissionFlight = () => {
     setShowSearch(true);
 
     const result = submissions.filter((submission) => {
-      const userFirstName = (submission.userId.firstName || "").toLowerCase();
-      const userLastName = (submission.userId.lastName || "").toLowerCase();
+      const userFirstName = (submission.userId?.firstName || "").toLowerCase();
+      const userLastName = (submission.userId?.lastName || "").toLowerCase();
 
       const [searchFirstName, searchLastName] = searchName
         .toLowerCase()
@@ -164,7 +164,6 @@ const SubmissionFlight = () => {
         </div>
         {alert && <Alert severity="success">Updated Successfully</Alert>}
       </form>{" "}
-      
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Table size="small">
@@ -186,11 +185,12 @@ const SubmissionFlight = () => {
             </TableHead>
             <TableBody>
               {showSearch
-                ? resultSearch.map((submission) => (
+                ? resultSearch &&
+                  resultSearch.map((submission) => (
                     <TableRow key={submission._id}>
                       <TableCell>
-                        {submission.userId.firstName}
-                        {submission.userId.LastName}
+                        {submission.userId?.firstName}
+                        {submission.userId?.LastName}
                       </TableCell>
                       <TableCell>{submission.leavingFrom}</TableCell>
                       <TableCell>{submission.goingTo}</TableCell>
@@ -303,11 +303,11 @@ const SubmissionFlight = () => {
                       </TableCell>
                     </TableRow>
                   ))
-                : submissions.map((submission) => (
+                : submissions&&submissions.map((submission) => (
                     <TableRow key={submission._id}>
                       <TableCell>
-                        {submission.userId.firstName}
-                        {submission.userId.LastName}
+                        {submission.userId?.firstName}
+                        {submission.userId?.LastName}
                       </TableCell>
                       <TableCell>{submission.leavingFrom}</TableCell>
                       <TableCell>{submission.goingTo}</TableCell>
